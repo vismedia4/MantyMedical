@@ -1,0 +1,81 @@
+/*
+ * Pioneer Connect — design tokens
+ * Colour values sampled directly from the prototype screenshots at full resolution.
+ * See docs/10-design-system.md for provenance, contrast notes, and open decisions.
+ */
+
+:root {
+  /* ── Brand ─────────────────────────────────────────────── */
+  --pc-brand-red:          #B13832;  /* primary actions, active states */
+  --pc-brand-red-bright:   #CA3A31;  /* card rails, reject text, links */
+  --pc-brand-red-logo:     #E94643;  /* logo mark only */
+  --pc-brand-navy:         #1B1F31;  /* headings, wordmark "Pioneer" */
+
+  /* ── Semantic ──────────────────────────────────────────── */
+  --pc-success:            #3B7E44;  /* Ready, Approve, active pill */
+  --pc-success-rail:       #498955;  /* completed card left rail */
+  --pc-warning:            #A75823;  /* pending, Accepted, approvals callout */
+  --pc-danger:             #B13832;  /* NOTE: identical to brand red — see doc 10 */
+
+  /* ── Neutrals ──────────────────────────────────────────── */
+  --pc-ink:                #1B1F31;
+  --pc-ink-muted:          #5C6376;
+  --pc-surface:            #FFFFFF;
+  --pc-bg:                 #F2F2F2;
+  --pc-border:             #E2E3E7;
+  --pc-border-subtle:      #EBECEF;
+
+  /* ── Tinted fills (pair each with its stated text colour) ─ */
+  --pc-red-tint:           #F2DFDF;  /* on: --pc-brand-red        sidebar active pill */
+  --pc-red-tint-soft:      #F6EAE9;  /* on: --pc-brand-red        IMMEDIATE badge */
+  --pc-red-tint-bg:        #EEE8E8;  /*                           incoming column */
+  --pc-red-tint-banner:    #EDE6E6;  /* on: --pc-brand-red        alert banner */
+  --pc-red-tint-btn:       #F1E3E5;  /* on: --pc-brand-red-bright Reject button */
+  --pc-green-tint:         #D8E5DE;  /* on: --pc-success          Approve button */
+  --pc-green-tint-pill:    #CADACE;  /* on: --pc-success          active pill */
+  --pc-amber-tint:         #F6DED0;  /* on: --pc-warning          Accepted badge */
+  --pc-amber-tint-pill:    #E2D2C5;  /* on: --pc-warning          pending pill */
+  --pc-neutral-tint:       #E7E9EE;  /* on: --pc-ink-muted        FUTURE badge */
+
+  /* ── Radius ────────────────────────────────────────────── */
+  --pc-radius-sm:    6px;   /* badges, pills, inputs */
+  --pc-radius-md:   10px;   /* buttons, cards */
+  --pc-radius-lg:   14px;   /* modals, outer containers */
+  --pc-radius-full: 999px;  /* toggles, avatars, status pills */
+
+  /* ── Space (4px base) ──────────────────────────────────── */
+  --pc-space-1:  4px;
+  --pc-space-2:  8px;
+  --pc-space-3: 12px;
+  --pc-space-4: 16px;
+  --pc-space-5: 20px;
+  --pc-space-6: 24px;
+  --pc-space-8: 32px;
+
+  /* ── Type ──────────────────────────────────────────────── */
+  --pc-font-heading: "Poppins", "Outfit", system-ui, sans-serif;   /* proposed */
+  --pc-font-body:    "Inter", system-ui, -apple-system, sans-serif;
+  --pc-font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --pc-text-display: 700 32px/1.15 var(--pc-font-heading);
+  --pc-text-h1:      700 24px/1.25 var(--pc-font-heading);
+  --pc-text-h2:      700 20px/1.3  var(--pc-font-heading);
+  --pc-text-h3:      600 17px/1.35 var(--pc-font-body);
+  --pc-text-body:    400 15px/1.5  var(--pc-font-body);
+  --pc-text-body-sm: 400 13px/1.45 var(--pc-font-body);
+  --pc-text-caption: 400 12px/1.4  var(--pc-font-body);
+  --pc-text-numeral: 700 30px/1.1  var(--pc-font-heading);
+
+  /* Signature device: uppercase tracked micro-label.
+     Used for every section boundary on every screen. */
+  --pc-label-size:       12px;
+  --pc-label-weight:     600;
+  --pc-label-tracking:   0.06em;
+  --pc-label-transform:  uppercase;
+
+  /* ── Controls ──────────────────────────────────────────── */
+  --pc-control-height:        44px;
+  --pc-control-height-lg:     52px;  /* full-width primary */
+  --pc-control-height-tablet: 56px;  /* valet board — proposed */
+  --pc-card-rail-width:        4px;  /* queue card left rail */
+}
