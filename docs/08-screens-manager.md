@@ -1,6 +1,13 @@
 # 08 — Screens: Garage Manager
 
-Desktop, left sidebar + content. Six screens.
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Changed:** first-name search is the named requirement (§6.5); vehicle photo editing
+> removed (§4.1); history window is 2–3 days (§4.3); a planned-absence switch is added
+> for the manager-absence backup (§6.1).
+
+Desktop, left sidebar + content, **operable remotely** — the client requires managers to
+*"work remotely without being on site."* Nothing in this role may assume presence at the
+garage. Seven screens.
 
 **Shared chrome** — page title top-left; `📍 {Location}` and `👁 Viewing as ▾` top-right;
 content on the neutral page background with white cards. Sidebar per doc 05.
@@ -77,10 +84,14 @@ Circular avatars are tinted by kind (grey / amber / red) — a fast visual sort.
 
 **Must be built:**
 - The **Review** destination — full submitted profile with Approve/Reject in context.
-- **Identifier assignment.** `PP-1310` is present on the Torres approval but the
-  customer never entered it (doc 06 · C7). Either the manager assigns it during
-  approval, or the system generates it. Doc 14, Q3.
+- **Identifier verification.** The customer supplies the decal / unit number at
+  registration (client-confirmed). The manager's job here is to *verify* it against the
+  property's records, and correct it if wrong — so the field must be **editable at
+  approval**, not read-only.
 - A rejection reason, captured and shown to the customer *(proposed)*.
+- **Escalation state.** An approval past its SLA renders as `escalated` and is visible to
+  the Office Admin (doc 04 §6). Show the manager that it escalated — silently
+  reassigning their work is worse than the delay.
 - Empty state — *"Nothing awaiting approval."*
 
 ---
@@ -93,7 +104,7 @@ photos, and manage customer accounts for this location."*
 
 | Element | Spec |
 |---|---|
-| Search | Full-width, 🔍 placeholder *"Search customers, vehicles, parking location…"* |
+| Search | Full-width, 🔍 placeholder *"Search customers, vehicles, parking location…"*. **First-name match is the primary path** — client-named behavior (see below) |
 | Action | **👤+ Add customer** — bordered, right of search |
 | Table | Columns `CUSTOMER` · `STATUS` · `VEHICLES`, **all sortable** (↕ affordance in each header) |
 
@@ -106,8 +117,23 @@ photos, and manage customer accounts for this location."*
 Search spans customers, vehicles, **and parking location** — meaning it queries the
 staff-only field on requests. That is the "where did we put the Camry?" lookup.
 
-**Not shown:** row actions or a customer detail view, though the subtitle promises
-editing vehicle details and photos. A customer detail screen is required scope. Doc 14, Q4.
+**First name is the fast path.** The client called this out specifically:
+
+> *"Simple first-name search — Jonathan emphasized this specifically as the search
+> behavior he wants."*
+
+Rank first-name matches above everything else; keep the broader fields as fallback. A
+manager on the phone with "Grace from 12B" types *Grace*.
+
+**Vehicle photo editing is removed.** The prototype subtitle promises editing *"vehicle
+details and photos"* — photos no longer exist. Images are generic assets derived from
+make/model/colour (doc 03). Update the subtitle to *"Approve changes, edit vehicle and
+customer details, and manage customer accounts for this location."*
+
+**Not shown:** row actions or a customer detail view. A customer detail screen is
+**required scope** — it is where the manager edits vehicle and customer information and
+sees phone numbers, which valets cannot. Listed in doc 05 as a screen the prototype
+does not show.
 
 ---
 
@@ -142,22 +168,34 @@ lock screen with a message).
 Title **Request History**; subtitle *"Completed requests are retained for approximately
 7 days for operational review."*
 
+**Correct the window.** The client stated 2–3 days for the staff-facing view:
+*"records older than two or three days can drop off the valet view, since the platform is
+not doing billing."* Backend retention is **permanent and separate** (doc 04 §8) — the
+subtitle should say what the view shows, not imply anything is deleted. Suggested copy:
+*"Recent completed requests. Full history is retained in the system of record."*
+
 Table, all columns sortable: `CUSTOMER` · `VEHICLE` · `DECAL` · `TYPE` · `COMPLETED`
 
 | Column | Example | Note |
 |---|---|---|
 | Customer | Michael Torres | |
 | Vehicle | Toyota Camry | Make + model, no color |
-| Decal | PP-1042 | **Header is hard-coded "DECAL"** — must follow `location.identifier_type` |
+| Decal | PP-1042 | **Header is hard-coded "DECAL"** — must follow `location.identifier_type` (*"decal number, apartment number or unit number, whichever that property uses"*) |
 | Type | `Now` | `Now` for immediate, presumably the scheduled datetime otherwise |
 | Completed | Sep 9, 2026 at 5:18 PM | Absolute, location-local |
 
 The `DECAL` header is a concrete bug to avoid: at River North Condos this column is
 apartment numbers. Label it from the location.
 
-**Must be built:** date-range filter, search, pagination or infinite scroll, export
-*(proposed — dispute resolution frequently ends in "send me the record")*, and an empty
-state.
+**Must be built:** date-range filter, first-name search, pagination or infinite scroll,
+export *(proposed — dispute resolution frequently ends in "send me the record")*, and an
+empty state.
+
+**Open design question:** the valet board window is 2–3 days, but the manager's purpose
+here is *operational review*, and the business retains everything for complaints, legal
+and vehicle disputes. Recommendation *(proposed)*: give managers a **longer window than
+valets** — 30 days with date-range search into the full archive. The 2–3 day rule was
+stated about the *valet* view specifically.
 
 ---
 
@@ -184,3 +222,27 @@ scoping is right: a manager tunes their own stand; policy is a company decision.
 
 Interval and volume option sets are not fully visible. Recommendation *(proposed)*:
 interval `3 / 6 / 10 / 15 / 30 seconds`; volume `Low / Medium / High`.
+
+**Sound design is a client-reviewed deliverable.** *"The chime must be persistent but not
+annoying … the sound design matters to him."* Add a **test tone** control here so the
+manager hears what they are setting, and put the candidate assets in front of Jonathan
+before build rather than after.
+
+---
+
+## M7 · Availability *(new — client requirement)*
+
+Not in the prototype. Required by the manager-absence backup (doc 04 §6), which was the
+client's single flagged gap.
+
+| Control | Type | Behavior |
+|---|---|---|
+| **I'm available** / **I'm away** | Toggle | While away, new approvals route to the Office Admin immediately, with no SLA delay |
+| Away until | Date (optional) | Auto-restores availability |
+| Backup contact | Read-only | Shows who is covering — the assigned Office Admin |
+
+Add a persistent banner on every manager screen while away: *"You're marked away.
+Approvals are routing to the office."* — so nobody forgets they set it.
+
+This converts the common case (planned leave) from an SLA exception into a normal path,
+and it costs almost nothing to build.

@@ -1,5 +1,11 @@
 # 07 — Screens: Valet
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Corrected against the prototype:** the customer phone number is removed from the
+> request-detail modal (§4.2) — the client made valet phone access a privacy
+> restriction. Generic vehicle images replace photo tiles (§4.1). Recent-completion
+> history is 2–3 days, not 7 (§4.3).
+
 One screen and two modals. The valet's whole application is a board.
 
 **Design constraints unique to this role**
@@ -10,6 +16,7 @@ One screen and two modals. The valet's whole application is a board.
   no fine-grained drag interactions.
 - **Shared station account that never logs out.** No personal data on screen that isn't
   operationally necessary; no destructive actions without confirmation.
+- **Phone numbers are off-limits at this role.** Client privacy restriction — see V2.
 
 ---
 
@@ -57,8 +64,8 @@ frame is constant so muscle memory holds.
 ```
 ┌─────────────────────────────────────┐  ← 4px left rail:
 │ ┌──────┐  Michael                   │      red   = incoming/active
-│ │ No   │  Toyota Camry · Silver     │      green = completed
-│ │ photo│                            │
+│ │ 🚗   │  Toyota Camry · Silver     │      green = completed
+│ │ img  │                            │      (generic image, derived)
 │ └──────┘                            │
 │ PP-1042  🕐 5 minutes ago           │
 │ needs it ASAP                       │
@@ -72,7 +79,7 @@ frame is constant so muscle memory holds.
 
 | Line | Content | Style |
 |---|---|---|
-| 1 | Photo tile (or `No photo`) + **customer first name** | Name bold navy |
+| 1 | Generic vehicle image + **customer first name** | Name bold navy |
 | 2 | `{Make} {Model} · {Color}` | Slate |
 | 3 | `{identifier}` · 🕐 relative time *or* absolute datetime | Slate |
 | 4 | Timing note — *"needs it ASAP"* | Slate |
@@ -81,7 +88,9 @@ frame is constant so muscle memory holds.
 | 7 | Action row | |
 
 **Customer first name only.** Deliberate: enough for the valet to greet the customer,
-not a directory of residents left on an unattended screen.
+not a directory of residents left on an unattended screen. It also matches the client's
+stated search behavior — *"simple first-name search"* — so the board and the lookup use
+the same handle.
 
 **Badges**
 
@@ -100,7 +109,7 @@ Type badge and status badge are **independent** and render side by side.
 |---|---|
 | Incoming (`pending`) | **✓ Accept** — full-width filled red |
 | Active (`accepted`) | **↺** icon button (revert to pending) + **Ready** — filled green, wide |
-| Recently completed | None. ✓ check mark, green left rail, completion timestamp |
+| Recently completed | None. ✓ check mark, green left rail, completion timestamp. **Drops off the board after 2–3 days** (client-stated) — backend retention is permanent and separate |
 | Tomorrow / Future | **⊕ Move to active** — full-width, red text on pale red |
 
 Tapping anywhere on a card body opens **V2 · Request detail**.
@@ -127,9 +136,8 @@ Modal, centered, dimmed board behind. Title **Request detail**, ✕ close top-ri
 
 | Section | Content |
 |---|---|
-| Header | Photo tile · **{Color} {Make} {Model}** (bold navy) · `{identifier}` · status badge |
+| Header | Generic vehicle image · **{Color} {Make} {Model}** (bold navy) · `{identifier}` · status badge |
 | Facts | 👤 `Customer` → full name (**"Grace Kim"** — full name here, unlike the card) |
-| | 📞 `Phone` → `(312) 555-0188` |
 | | 🕐 `Needs it` → `ASAP` or the scheduled datetime |
 | Staff block | `📍 PARKING LOCATION · STAFF ONLY` — text input with placeholder *"e.g. Level 3 East, Red Zone, Charging Station A"* + **Save** |
 | Staff block | `📄 INTERNAL NOTES · STAFF ONLY` — dashed-border panel; empty text explains the purpose; input *"Add an operational note…"* + **+ Add** |
@@ -141,9 +149,25 @@ Modal, centered, dimmed board behind. Title **Request detail**, ✕ close top-ri
 > return", "leave key in vehicle"), and operational instructions. Visible to valet,
 > manager, and admin — never to customers.
 
-The phone number is the escalation path when the app fails: the valet calls the
-customer. It appears **only** in this modal, not on the board — an intentional
-minimum-exposure choice on a shared screen. Preserve that.
+### ⚠ The phone number must be removed
+
+The prototype's modal displays `📞 Phone (312) 555-0188`. **Delete it.** This is a
+client-stated privacy restriction, not a preference:
+
+> *"CANNOT: edit customer or vehicle data; **view customer phone numbers** — called out
+> by Jonathan as a privacy restriction. Phone access is preserved for authentication and
+> management at higher role levels."*
+
+Enforce it in the API, not the template: the valet serializer must not carry the field
+at all (doc 11). A shared, always-signed-in tablet in a semi-public garage is exactly
+the wrong place to expose a resident's phone number, and the client saw that before we
+did.
+
+**This removes the valet's escalation path.** The phone was how a valet resolved a
+problem the app could not — a car that will not start, a customer who did not show.
+That gap needs an answer before build; see doc 14, Q7. The likely shape *(proposed)*: a
+**"Notify manager"** action on the request that pings the garage manager, who *does*
+hold phone access. The valet raises the flag; the manager makes the call.
 
 Both staff blocks carry an explicit `STAFF ONLY` suffix in their labels. Keep it: on a
 tablet a customer can see over, that label is the control that stops a valet typing
@@ -164,9 +188,9 @@ Three segmented tabs, active tab filled red with white text:
 
 | Tab | Contents |
 |---|---|
-| **👥 Registered Customers** | Rows: 👤 name · status pill (`active` green / `pending` amber) · phone, right-aligned |
+| **👥 Registered Customers** | Rows: 👤 name · status pill (`active` green / `pending` amber). **The phone column shown in the prototype must be removed** — same restriction as V2 |
 | **🚗 Registered Vehicles** | *(not captured — expect vehicle, owner, identifier)* |
-| **🕘 Recent Pickups** | *(not captured — expect the ~7-day completed list)* |
+| **🕘 Recent Pickups** | *(not captured — the 2–3 day completed list)* |
 
 This is the valet's lookup tool: a customer walks up without having used the app, and
 the valet finds them by name.
@@ -174,5 +198,12 @@ the valet finds them by name.
 Everything here is read-only — no row actions, no editing, no settings. Enforce it in
 the API, not just the UI.
 
-**Recommended addition *(proposed)*:** a search field. Four seed rows fit on screen;
-two hundred residents will not, and the manager's equivalent screen already has search.
+**Required addition:** a **first-name search** field. Four seed rows fit on screen; two
+hundred monthly parkers will not. The client named the behavior specifically:
+
+> *"Simple first-name search — Jonathan emphasized this specifically as the search
+> behavior he wants."*
+
+Make first name the fast path — a valet is looking at a person standing in front of them
+and types "Grace". Match on first name first, surface those results above any
+substring matches elsewhere, and keep it forgiving of typos.

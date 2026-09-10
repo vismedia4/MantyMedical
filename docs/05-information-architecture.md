@@ -1,18 +1,25 @@
 # 05 — Information Architecture
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> Customer surface is now a **native app on both stores**, not a PWA (§4.7).
+
 ## Form factors
 
 | Role | Target | Layout | Rationale |
 |---|---|---|---|
-| Customer | Phone, ~390pt | Single column, **bottom tab bar** | Rendered in a phone frame in every prototype screenshot |
+| Customer | Phone, ~390pt | Single column, **bottom tab bar** | Rendered in a phone frame in every prototype screenshot. **Ships as a native app to both stores** — client requirement |
 | Valet | Tablet, landscape | **4-column kanban board**, full-bleed | Kiosk at the valet stand; stays signed in |
 | Garage Manager | Desktop | Fixed **left sidebar** + content | Grouped sidebar with section headings |
 | Office Admin | Desktop | Fixed **left sidebar** + content | Same chrome as Manager, different items |
 
-Build **one responsive web application**. The valet board and the admin consoles
-collapse acceptably to narrower widths; the customer shell is the only view with a
-genuinely distinct navigation pattern, and it is the one that ships as an installable
-PWA behind the QR code.
+**Recommended split *(proposed)*:** the manager and admin consoles are a responsive web
+application; the valet board is the same web app in a kiosk browser; the **customer app
+is native** (or a native shell around a shared web view), because *"app store deployment
+required"* is a client requirement and push notifications are the only channel to the
+customer.
+
+React Native or a thin native wrapper keeps one codebase across the customer app and the
+web consoles. Decide this before Tuesday — it materially changes the cost estimate.
 
 ## Route map *(proposed — the prototype is a single-page demo without visible routes)*
 
@@ -29,6 +36,7 @@ PWA behind the QR code.
 /app/vehicles                       My vehicles
 /app/vehicles/new                   Add a vehicle
 /app/notifications                  Notification list  (bell icon)
+/app/settings/notifications         Notification preferences  (ready · retrieving opt-in)
 
 ── Valet (tablet board) ────────────────────────────────────────────
 /valet                              Queue board (4 columns)
@@ -42,12 +50,14 @@ PWA behind the QR code.
 /manager/valet-accounts             Valet Account
 /manager/history                    Request History
 /manager/settings                   Settings (chime)
+/manager/availability               Planned-absence switch  (doc 04 §6)
 
 ── Office Admin (desktop) ──────────────────────────────────────────
 /admin                              Office Console
 /admin/users                        Users (staff | customers)
 /admin/locations                    Locations
 /admin/activity                     Activity History
+/admin/approvals                    Escalated approvals queue  (doc 04 §6)
 /admin/settings                     Settings & Operational Policies
 ```
 
@@ -105,6 +115,7 @@ ADMINISTRATION
   👤 Valet Account
   🕘 Request History
   ⚙  Settings
+  🟢 Availability           ← new, planned-absence switch
 ```
 
 ### Admin sidebar
@@ -115,6 +126,7 @@ OVERVIEW
 ADMINISTRATION
   👥 Users
   📍 Locations
+  ⚠  Escalated Approvals    ← new, with a count badge
   📈 Activity History
   ⚙  Settings
 ```
@@ -161,16 +173,24 @@ picker.
 | 19 | Locations | Admin | `screens/admin/03-locations-add.png`, `04-locations-list.png` |
 | 20 | Activity History | Admin | `screens/admin/05-activity-history.png` |
 | 21 | Settings & Policies | Admin | `screens/admin/06-settings-policies.png` |
+| 22 | Availability *(new)* | Manager | — client requirement, doc 08 · M7 |
+| 23 | Escalated Approvals *(new)* | Admin | — client requirement, doc 09 · A6 |
+| 24 | Notification preferences *(new)* | Customer | — client requirement, doc 06 · C8 |
 
 **Screens the product needs that the prototype does not show** — scope these
 explicitly rather than discovering them in sprint 3:
 
-- Sign-up / enrollment flow (access code → identifier → profile → first vehicle)
+- Sign-up / enrollment flow (QR → access code → identifier → profile → first vehicle)
 - Forgot password / reset password
 - Notification list behind the customer's bell icon
+- **Notification preferences** — *Ready* default, *Retrieving Vehicle* opt-in (client requirement)
+- **Escalated-approvals queue** for the Office Admin (client's flagged gap, doc 04 §6)
+- **Manager planned-absence switch**
+- **Assisted-customer request flow** for customers without smartphones, if Option A is chosen (doc 04 §7)
 - Customer profile & account settings (change phone, email, password)
 - Empty states for a brand-new customer with zero vehicles
 - Error, offline, and connection-lost states — **critical for the valet tablet**
 - Admin → Users → **Customers** tab (the tab exists; only *Staff* is shown)
+- App-store surfaces: onboarding, permissions priming for push, store listings
 - Approval **Review** detail view (the button exists; the destination is not shown)
 - Confirmation dialogs for destructive actions (Suspend, Disable, Regenerate, Reject)

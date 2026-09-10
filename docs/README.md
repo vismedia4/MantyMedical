@@ -1,8 +1,10 @@
 # Pioneer Connect — Design & Development Documentation
 
-**Product:** Pioneer Connect — *Smart Valet Retrieval*
-**Operator:** Pioneer Parking (multi-property: parking garages + residential buildings)
-**Status of source material:** Interactive click-through prototype, banner-marked `PROTOTYPE — NOT PRODUCTION`
+**Product:** Valet retrieval platform — prototyped as *Pioneer Connect · Smart Valet Retrieval*
+**Client:** Pioneer Parking (multi-property: garages + residential buildings)
+**Note on the name:** the product is designed for **licensing to other parking
+operators**, so "Pioneer Connect" is provisional and branding lives in a theme layer.
+See [00 §6.3](00-client-requirements.md).
 
 ---
 
@@ -15,11 +17,16 @@ specs, design tokens, and a proposed API contract.
 It is written for an engineering team that has **not** seen the prototype and needs
 to build the production system from these documents alone.
 
-## How this was produced
+## Two sources, in priority order
 
-Source of record was a set of 22 full-page screenshots of the prototype covering all
-four roles. Every factual claim below traces to a pixel in those screenshots, which
-are checked in under [`screens/`](screens/) as normative reference art.
+| Priority | Source | Status |
+|---|---|---|
+| **1** | **Client requirements session, September 10, 2026** — Jonathan Cohen with VisMedAI Advisory. Archived: [`source/`](source/) | **Authority.** Where it disagrees with the prototype, it wins |
+| 2 | 22 full-page prototype screenshots, all four roles. Checked in under [`screens/`](screens/) | Reference art. Superseded where the brief says otherwise |
+
+[00 — Client Requirements](00-client-requirements.md) records exactly what the brief
+**changed**, **resolved** and **added** relative to the prototype. Read it first if you
+have seen an earlier version of these documents.
 
 **Read this convention before using the docs:**
 
@@ -37,6 +44,7 @@ with the product owner before sprint 1.
 
 | # | Document | Read it for |
 |---|---|---|
+| **00** | **[Client Requirements & Decision Log](00-client-requirements.md)** | **The authority.** What the client asked for; what changed against the prototype |
 | 01 | [Product Overview](01-product-overview.md) | What the product is, who it serves, the core loop |
 | 02 | [Roles & Permissions](02-roles-and-permissions.md) | The four roles, RBAC matrix, tenancy scoping |
 | 03 | [Domain Model](03-domain-model.md) | Entities, fields, relationships, ERD |
@@ -51,7 +59,9 @@ with the product owner before sprint 1.
 | 12 | [Notifications & Real-Time](12-notifications-and-realtime.md) | The chime, live updates, push |
 | 13 | [Non-Functional Requirements](13-nonfunctional-requirements.md) | Security, privacy, retention, a11y |
 | 14 | [Open Questions](14-open-questions.md) | Decisions blocking or shaping the build |
-| 15 | [Delivery Plan](15-delivery-plan.md) | Phased scope, milestones, sizing |
+| 15 | [Delivery Plan](15-delivery-plan.md) | Phased scope, milestones, sizing, risk register |
+| 16 | [Website Refresh](16-website-refresh.md) | Workstream 2 — positioning, content, stack |
+| 17 | [Roadmap Beyond MVP](17-roadmap-beyond-mvp.md) | Workstream 3 — transient ticketing, deferred items |
 
 ## Reference screenshots
 
@@ -66,16 +76,41 @@ screens/
               05-activity-history · 06-settings-policies
 ```
 
-Browser chrome has been cropped; images are downscaled to 1400px wide. Colors quoted
-in [10 — Design System](10-design-system.md) were sampled from the uncropped originals
-and are exact.
+Browser chrome has been cropped; images are downscaled to 1400px wide. Colors quoted in
+[10 — Design System](10-design-system.md) were sampled from the uncropped originals and
+are exact.
+
+> **The screenshots are not fully current.** Three things visible in them are corrected
+> by the brief: the `Add photo` control (no uploads — generic images instead), the phone
+> number in the valet request-detail modal (barred at the valet role), and the "~7 days"
+> retention copy (2–3 days for the valet view; permanent in the backend). Each screen doc
+> flags the delta inline.
 
 ## The one-paragraph summary
 
-A resident or tenant opens the app, taps to request their car, and watches a
-three-step progress bar. A valet standing at a tablet in the garage sees the request
-land in an *Incoming* column with a chime that will not stop until someone accepts
-it, retrieves the car, and taps *Ready*. A garage manager approves new customers and
-vehicle changes for their location and can override any request status. An office
-admin runs the property portfolio — locations, staff accounts, six-digit enrollment
-codes, and system-wide policy.
+An approved monthly parker opens the app, taps **Request Now**, and watches a three-step
+progress bar. A valet at a tablet in the garage sees the request land in an *Incoming*
+column with a chime that will not stop until someone accepts it, retrieves the car, and
+taps *Ready* — which sends the customer the one push notification the product exists to
+deliver. A garage manager, working remotely, approves new customers and vehicle changes
+for their location and can override any request status; if they go quiet, approvals
+escalate to the office rather than stalling. An office admin runs the portfolio —
+locations, staff accounts, six-digit enrollment codes, and system-wide policy.
+
+## The three decisions that shape everything
+
+1. **Reliability is the acceptance criterion.** Pioneer is leaving ElimaWait (~$165/mo)
+   because it is unreliable. A feature-complete app that drops a request has failed.
+2. **Multi-tenant from day one.** The product is to be licensed to other parking
+   operators. Tenant isolation is cheap now and expensive later; white-label theming is
+   deferred.
+3. **The MVP is deliberately narrow.** Approved recurring monthly parkers only. No
+   billing, no guests, no transient parkers, no broadcast messaging, no SMS, no photo
+   uploads. Every one of those is a client-stated boundary.
+
+## Next decision point
+
+**Tuesday, September 15, 12:00 noon** — VisMedAI presents MVP scope, timeline and cost,
+plus website direction. [15 — Delivery Plan](15-delivery-plan.md) and
+[16 — Website Refresh](16-website-refresh.md) feed that meeting;
+[14 — Open Questions](14-open-questions.md) Q1 and Q2 must be closed in it.

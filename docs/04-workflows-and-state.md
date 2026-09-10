@@ -1,5 +1,9 @@
 # 04 — Workflows & State Machines
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> The cancellation window (§1) is now client-decided; §6 (manager-absence backup) and
+> §7 (no-smartphone path) are new requirements from the brief.
+
 ## 1. Retrieval request lifecycle
 
 ### The state machine
@@ -26,7 +30,7 @@
 | `accepted` → `pending` | Valet | ↺ icon on card, or **Revert to Pending** in detail modal |
 | `accepted` → `ready` | Valet | **Ready** button (card or detail modal) |
 | `ready` → `completed` | *unobserved* | See below |
-| `pending` → `cancelled` | Customer | **Cancel Request** on the status screen |
+| `pending` → `cancelled` | Customer | **Cancel Request** — **only while `pending`** (client-decided) |
 | *any* → *any* | Manager / Admin | **Override status** dropdown on Manager Dashboard |
 
 ### Two gaps you must close before building
@@ -42,13 +46,25 @@ state exists — but no screen shows the button that produces it. Three candidat
 | Customer confirms collection in-app | Best data; requires the customer to act after they have their car — they won't |
 
 **Recommendation *(proposed)*: valet action, with an auto-complete safety net after N
-hours.** Operational history is the product's dispute-resolution backbone; it should
+hours.** Not addressed in the September 10 session; still open (doc 14, Q4).
+ Operational history is the product's dispute-resolution backbone; it should
 reflect a human confirming the handoff, but must not accumulate stuck `ready` rows
 when a valet forgets. Log auto-completions distinctly in the activity feed.
 
-**(b) `cancelled` is inferred.** The customer status screen has a **Cancel Request**
-button, but no screen shows a cancelled request. Decide whether cancelled requests
-appear on the valet board (they must, if a valet already accepted one) and in history.
+**(b) The cancellation window is now decided.** The client resolved it:
+
+> *"Cancellation is required. Customers must be able to cancel a request **before it is
+> accepted**. The request-state flow was tested in-session to determine when the cancel
+> option should surface."*
+
+So: **Cancel is available in `pending` and disappears the moment a valet accepts.** The
+customer status screen must hide the button on the `accepted` transition — which, because
+the board updates live, means it can vanish while the customer is looking at it. Handle
+that gracefully: replace it with the "a valet is retrieving your vehicle" state rather
+than letting a dead button sit there.
+
+Still to decide: whether a cancelled request is visible to staff in history. It must
+be — otherwise a valet who already walked toward the car has no explanation. Doc 14, Q11.
 
 ### Customer-facing vs. staff-facing status vocabulary
 
@@ -102,7 +118,8 @@ auto-promote when their time arrives is unresolved *(see doc 14)*. Recommendatio
   └────────────────────────────┬────────────────────────────────────────┘
                                ▼
   ┌─────────────────────────────────────────────────────────────────────┐
-  │ 3. Customer submits profile + first vehicle (make, model, color)    │
+  │ 3. Customer submits registration details:                           │
+  │       name · vehicle information · unit / decal number              │
   │    → User.status = pending                                          │
   │    → ApprovalRequest(kind = new_registration) created               │
   └────────────────────────────┬────────────────────────────────────────┘
@@ -117,8 +134,12 @@ auto-promote when their time arrives is unresolved *(see doc 14)*. Recommendatio
      Customer can request a car         Customer notified  (mechanism TBD)
 ```
 
-Step 2's branching is the reason `identifier_type` must be configuration. The
-enrollment form is **generated from the location record**, not hard-coded.
+This flow is client-confirmed step for step. Two details it settles:
+
+- Step 2's branching is why `identifier_type` must be configuration. The enrollment form
+  is **generated from the location record**, not hard-coded.
+- **The customer supplies the identifier**, not staff. The manager's job at approval is
+  to *verify* the decal / unit number is real, not to assign one.
 
 Gate: step 3→4 only applies while `require_manager_approval_new_customers` is on. With
 the policy off, registration should activate immediately. Build both paths.
@@ -155,9 +176,12 @@ keeps showing the *current* values (Toyota / Camry / Silver) while an amber bann
 reports the pending item separately: *"Awaiting manager approval — New vehicle: Forest
 Green Rivian R1S."* Pending state is additive and non-destructive.
 
-**Photo uploads appear to bypass approval** *(inferred)*: **Add photo** sits next to the
-editable fields but outside the *"Approval required · Submit change"* row. Confirm —
-if photos need moderation, that is a fourth approval kind.
+**There is no photo upload.** The client removed it: vehicle images are generic assets
+derived from make + model + colour (doc 03). Changing the colour therefore changes the
+rendered image — which means a **vehicle-change approval implicitly approves an image
+change**, with no separate moderation path and no user-supplied media anywhere in the
+system. That is the point of the decision: *"reduces data load and avoids privacy
+exposure."*
 
 ---
 
@@ -222,21 +246,109 @@ implementation guidance in [12 — Notifications & Real-Time](12-notifications-a
 
 ---
 
-## 6. Data retention
+## 6. Manager-absence backup — the client's flagged gap
 
-*"Completed requests are retained for approximately 7 days for operational review."*
+> *"Must be able to intervene when a garage manager is unavailable — Jonathan's single
+> flagged gap in the prototype. **Pending approvals must not stall on manager absence.**"*
+
+The only substantive objection raised in the entire prototype walkthrough. A new
+customer who cannot get approved cannot park; an approval sitting behind an absent
+manager is a customer standing in a lobby.
+
+### Required design
 
 ```
-  request COMPLETED ──► visible in Manager Request History
-                        visible in valet "Recently Completed"
-                                │
-                          + ~7 days
-                                ▼
-                        removed from staff-facing views
+  ApprovalRequest created
+        │
+        ├── manager acts within SLA ──────────────► resolved, normal path
+        │
+        └── SLA breached (no decision in N hours)
+                    │
+                    ├──► mark approval "escalated"      ← visible state, not silent
+                    ├──► notify Office Admin
+                    ├──► surface on the Admin console as an actionable queue
+                    └──► Office Admin approves / rejects with full manager authority
 ```
 
-"Retained for ~7 days" describes **staff visibility**, not necessarily deletion. Given
-the stated dispute-resolution purpose, the recommendation *(proposed)* is: keep the
-`ActivityEvent` audit trail long-term, expire only the operational queue view, and make
-the window the configurable `retain_completed_requests_days` policy. Note this
-intersects with privacy retention obligations — see doc 13.
+Four decisions the client must make — put them on Tuesday's agenda:
+
+| Decision | Recommendation *(proposed)* |
+|---|---|
+| **SLA before an approval is "stalled"** | 4 business hours for registrations; 24h for vehicle changes. A new parker is time-sensitive; a colour change is not |
+| **Who is notified** | Office Admin, plus any co-manager assigned to the location |
+| **Automatic or manual escalation** | **Automatic.** A pull-only model reproduces the exact failure being fixed — it depends on someone noticing |
+| **Does the manager keep the ability to act after escalation?** | Yes. Escalation widens the set of people who can act; it never locks the manager out |
+
+Add a **planned-absence switch** *(proposed)*: a manager going on leave marks themselves
+away and approvals route to the admin immediately, with no SLA delay. Cheap, and it
+converts the common case from an exception into a normal path.
+
+Requires a visible **escalated** state on `ApprovalRequest`, an admin-facing queue, and
+an `ActivityEvent` on every escalation and admin decision.
+
+---
+
+## 7. Customers without smartphones — unresolved, and blocking
+
+> *"Discussed at length. QR-code assistance and manager-supported setup were considered,
+> and a manual override path was identified as a likely requirement. Not resolved. Needs
+> a decision before build — it affects the data model, the manager UI and the retrieval
+> workflow."*
+
+This is not a screen. It is a **data-model question**, which is why it blocks.
+
+The whole system assumes a customer record *is* an authenticated user who taps a button
+in an app. A monthly parker without a smartphone breaks that assumption at three layers:
+
+| Layer | What breaks |
+|---|---|
+| **Data model** | A customer record with no login, no push token, no notification target |
+| **Manager UI** | Someone must create and maintain the record on their behalf |
+| **Retrieval workflow** | Who taps "Request Now"? And how is the customer told the car is ready, when push is the only channel? |
+
+### Three viable paths
+
+| Option | How it works | Cost | Verdict |
+|---|---|---|---|
+| **A · Staff-proxied request** | Customer phones or walks up; valet or manager raises the request on their behalf. Record exists, no login | Low — one new action on the staff side | **Recommended.** Preserves the queue's integrity: every car in the garage is on the board regardless of how it got there |
+| **B · Call-ahead only, outside the app** | These customers stay on the current manual process entirely | Zero build | Rejected — the board stops being the single source of truth, which is the product's value |
+| **C · Phone-based request (IVR / keypad)** | Customer calls a number, enters their unit number | High; and the client ruled out SMS, so a telephony channel is off-thesis | Defer |
+
+**Recommendation *(proposed)*: Option A.** Add a `contact_mode` field to the customer
+record (`app` \| `assisted`), let staff raise requests for `assisted` customers, and
+mark those requests on the board so the valet knows to walk out and tell the person
+rather than relying on a push notification that will never arrive.
+
+That last part matters: **the notification design assumes push.** For assisted
+customers, "Ready" has to become a physical hand-off, and the board must say so.
+
+---
+
+## 8. Data retention
+
+The client split this cleanly into two independent things. The prototype's
+"approximately 7 days" copy describes only the first.
+
+```
+  request COMPLETED
+        │
+        ├──► valet board "Recently Completed"  ──► drops off after 2–3 days
+        │    manager Request History               (client-stated window)
+        │
+        └──► backend repository                ──► retained PERMANENTLY
+                                                   metrics · complaints
+                                                   legal · vehicle disputes
+```
+
+> *"Full historical activity retained permanently in the backend repository."*
+> *"Records older than two or three days can drop off the valet view, since the platform
+> is not doing billing."*
+
+**Nothing is deleted.** The UI window is a view concern; retention is indefinite behind
+it. Make `valet_history_visible_days` configurable (default 3) and keep it entirely
+separate from any deletion policy.
+
+This creates an obligation the brief itself flags as a risk: indefinite retention is
+defensible for disputes and legal support, but it **needs a written retention and access
+policy** — particularly given the deliberate decision to withhold phone numbers from
+valets. Drafting that policy is in scope, not an afterthought. See doc 13 §4.

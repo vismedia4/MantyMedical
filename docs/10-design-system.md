@@ -1,5 +1,11 @@
 # 10 — Design System
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Note on branding:** the product is designed for licensing to other parking operators,
+> so *"company structure, product name and branding must stay flexible."* Everything
+> below is **Pioneer's theme, not the system's identity.** Ship it as a token set bound
+> to `Tenant.theme`, never hard-coded. See doc 03.
+
 All hex values were **sampled directly from the prototype screenshots** at full
 resolution. They are exact, not approximations, unless marked.
 
@@ -66,6 +72,14 @@ Every status colour has a pale companion used as a background.
 | `--neutral-tint` | `#E7E9EE` | `#5C6376` | `FUTURE` badge |
 | `--proto-banner` | `#EAE2DC` | `#A75823` | "PROTOTYPE — NOT PRODUCTION" bar — **remove in production** |
 
+### Two prototype artefacts to strip
+
+1. **The `PROTOTYPE — NOT PRODUCTION` banner** and the `Viewing as` role switcher.
+2. **The red chat bubble** in the bottom-right of every screenshot — the prototype's
+   comment-and-screenshot widget. Client direction: *"reposition it as an internal
+   bug-reporting tool, not a general customer feedback channel."* It must not appear in
+   any customer-facing build; keep it in internal and staging builds only, behind a flag.
+
 ### Accessibility check
 
 `#5C6376` on `#FFFFFF` ≈ **6.2:1** — passes AA for body text.
@@ -95,6 +109,7 @@ Observed characteristics and a recommended stack:
 | Role | Observed | Recommended *(proposed)* |
 |---|---|---|
 | Headings / wordmark | Geometric sans, tight tracking, heavy weight at large sizes | **Poppins** or **Outfit**, 600–700 |
+
 | UI / body | Neutral grotesque, high x-height | **Inter**, 400–600 |
 | Codes & identifiers | Monospace, letter-spaced — `481027`, `@wacker-valet` | **JetBrains Mono** or `ui-monospace` |
 
@@ -189,11 +204,27 @@ Horizontal, three nodes joined by a 2px rule. Completed/current: filled `--brand
 dot and red connector. Future: `--ink-muted` dot, grey connector. Labels below, 13px,
 centred.
 
-### Photo tile
+### Vehicle image tile
 
-Fixed square (~72px board / ~88px detail), `--bg` fill, `radius-md`, centred 🚗 icon
-over the words `No photo` in 11px muted. Appears on **every** vehicle reference across
-all four roles — build it once.
+Fixed square (~72px board / ~88px detail), `--bg` fill, `radius-md`. Appears on **every**
+vehicle reference across all four roles — build it once.
+
+**There is no photo upload.** The client replaced customer uploads with **generic images
+derived from make + model + colour** (doc 03), for data load and privacy. The tile
+renders:
+
+| State | Rendering |
+|---|---|
+| Resolved | The mapped generic vehicle asset, tinted or selected by colour |
+| Unresolved make/model | Neutral silhouette in the vehicle's colour — never an error, never a broken image |
+| No colour | Neutral grey silhouette |
+
+The prototype's `No photo` placeholder is retired. Design the assets as flat
+side-profile silhouettes in the system palette so a colour swap is a fill change, not
+150 × 12 rendered files.
+
+**Asset set is a real deliverable** — VisMedAI action item 04. Recommend body-style ×
+colour (~150 assets) over make × model (unbounded). Start it in parallel with build.
 
 ### Modal
 

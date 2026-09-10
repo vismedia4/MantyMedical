@@ -1,10 +1,10 @@
-# Pioneer Connect
+# Valet Retrieval Platform
 
-**Smart Valet Retrieval** — a multi-property valet request and retrieval system for
-Pioneer Parking, spanning commercial garages and residential buildings.
+A multi-property valet request and retrieval system, built for **Pioneer Parking** and
+architected from day one for **licensing to other parking operators**. Prototyped as
+*Pioneer Connect — Smart Valet Retrieval*; the product name is provisional.
 
-This repository currently holds the **design and development specification** harvested
-from the interactive prototype. No application code yet.
+This repository holds the **design and development specification**. No application code yet.
 
 ## Start here
 
@@ -18,15 +18,27 @@ Fastest path in, depending on what you need:
 | Building the backend | [03 — Domain Model](docs/03-domain-model.md) → [04 — Workflows](docs/04-workflows-and-state.md) → [11 — API Contract](docs/11-api-contract.md) |
 | Building the frontend | [05 — Information Architecture](docs/05-information-architecture.md) → [06–09 — Screen Specs](docs/06-screens-customer.md) → [10 — Design System](docs/10-design-system.md) |
 | Planning the work | [15 — Delivery Plan](docs/15-delivery-plan.md) → [14 — Open Questions](docs/14-open-questions.md) |
-| The product owner | [14 — Open Questions](docs/14-open-questions.md) — five decisions block sprint 1 |
+| The product owner | [00 — Client Requirements](docs/00-client-requirements.md), then [14 — Open Questions](docs/14-open-questions.md) — five decisions block sprint 1 |
+| Working on the website | [16 — Website Refresh](docs/16-website-refresh.md) |
 
-## Source
+## Sources, in priority order
 
-Reverse-engineered from 22 full-page screenshots of the click-through prototype
-(banner-marked `PROTOTYPE — NOT PRODUCTION`), checked in under
-[`docs/screens/`](docs/screens/) as normative reference art. Colour values in the design
-system were sampled from the original pixels and are exact.
+1. **Client requirements session, September 10, 2026** — Jonathan Cohen (Pioneer Parking)
+   with VisMedAI Advisory. Archived at [`docs/source/`](docs/source/). **This is the
+   authority.**
+2. **22 prototype screenshots**, checked in under [`docs/screens/`](docs/screens/) as
+   reference art. Colour values in the design system were sampled from the original
+   pixels and are exact.
 
-Every claim in the docs is marked *(observed)*, *(inferred)*, or *(proposed)* so the team
-can tell requirements from recommendations. See the convention table in
-[`docs/README.md`](docs/README.md).
+Where the two disagree, the brief wins.
+[`docs/00-client-requirements.md`](docs/00-client-requirements.md) records every such
+correction.
+
+Every claim is marked *(observed)*, *(inferred)*, or *(proposed)* so the team can tell
+requirements from recommendations.
+
+## Scope in one line
+
+Approved recurring monthly parkers only. No billing, no guests or transient parkers, no
+broadcast messaging, no SMS, no photo uploads — each a client-stated boundary. Transient
+ticketing is [workstream 3](docs/17-roadmap-beyond-mvp.md), deliberately deferred.

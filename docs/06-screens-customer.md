@@ -1,6 +1,11 @@
 # 06 — Screens: Customer
 
-Mobile shell, ~390pt wide. Every screen shares the same header and bottom tab bar.
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Changed against the prototype:** photo upload removed (§4.1); Request Now confirmed
+> (§5); cancel is `pending`-only (§5); notification preferences added (§6.4).
+
+Mobile shell, ~390pt wide. **Ships as a native app to both stores.** Every screen shares
+the same header and bottom tab bar.
 
 **Shared chrome**
 
@@ -78,19 +83,25 @@ Michael                                    ← greeting, first name only
 | Element | Spec |
 |---|---|
 | Greeting | "Welcome back," (slate, small) over **First name** (navy, bold, large) |
-| Vehicle card | Photo tile or `No photo` placeholder · `{color} {make} {model}` · 🚗 `{identifier}` |
+| Vehicle card | **Generic vehicle image** (derived from make/model/colour — never uploaded) · `{color} {make} {model}` · 🚗 `{identifier}` |
 | Request strip | Only when a request is live. Status label left, `View status ›` right, red-tinted background |
 | Repeat | One card per vehicle |
 
-**The primary action is missing from this screen.** There is no visible "Request my
-car" button anywhere in the customer flow, yet requests plainly originate from the
-customer. The vehicle card in the screenshot is fully occupied by an *existing*
-request. Resolve before building — recommendation *(proposed)*: a full-width primary
-**Request my car** button inside each vehicle card, which the live-request strip
-replaces while a request is open. See doc 14, Q1.
+**The primary action — now confirmed.** The prototype screen shows no request control
+because the pictured vehicle already has a live request. The client confirmed the action
+exists: *"Customer taps **Request Now**."*
+
+Spec: a full-width primary **Request Now** button inside each vehicle card, replaced by
+the live-status strip while a request is open. One tap, no confirmation dialog, no
+intermediate screen — this is the action the entire product exists to serve, and it is
+performed by someone walking toward a lobby door.
+
+Only `active` vehicles get the button. A vehicle still `pending_approval` shows the
+reason instead.
 
 **Empty states to build:** no vehicles yet (→ prompt to add one), vehicle pending
-approval (→ blocked with explanation), no active request (→ the request button).
+approval (→ blocked, with the reason), account still `pending` (→ "awaiting approval
+from the garage manager"), no active request (→ the **Request Now** button).
 
 ---
 
@@ -102,7 +113,7 @@ Reached from `View status ›`.
 | Element | Spec |
 |---|---|
 | Header row | **Your request** (navy, bold) · `↻ Refresh` (slate, right) |
-| Vehicle card | Photo tile · `{color} {make} {model}` · `Decal {id} · {Location name}` · status pill right-aligned |
+| Vehicle card | Generic vehicle image · `{color} {make} {model}` · `{identifier_label} {id} · {Location name}` · status pill right-aligned |
 | Progress card | `PROGRESS` label; three-node horizontal stepper |
 | Caption | *"Updates automatically as the valet works your request."* |
 | Action | **⊗ Cancel Request** — full width, red text on a pale red fill, red border |
@@ -121,9 +132,15 @@ Node labels are the customer vocabulary from doc 04 — never show "Accepted".
 The `↻ Refresh` control plus *"updates automatically"* implies polling with a manual
 override. Prefer real-time updates and keep Refresh as the fallback — see doc 12.
 
-**Undefined:** whether Cancel remains available after a valet accepts. Recommendation
-*(proposed)*: allow it in `pending`, require a confirm dialog in `accepted`, hide it in
-`ready` (the car is already at the door).
+**Cancel is `pending`-only — client-decided.**
+
+> *"Customers must be able to cancel a request **before it is accepted**."*
+
+The button renders only while `status = pending` and must disappear on the `accepted`
+transition. Because status updates live, it can vanish while the customer is looking at
+it — replace it in place with the retrieving state rather than leaving a button that
+will fail. If a cancel request loses the race with an accept, return `409` and show
+*"A valet has already started retrieving your vehicle."*
 
 ---
 
@@ -144,7 +161,8 @@ Submit is disabled until a date/time is chosen. The quick options are shortcuts 
 populate the datetime field *(inferred)* — "Later today" needs a defined default hour.
 
 **Not shown:** which vehicle a scheduled pickup applies to. With multiple vehicles
-(Grace Kim has two) this screen needs a vehicle selector. Doc 14, Q2.
+(Grace Kim has two — multiple vehicles per customer is client-confirmed) this screen
+needs a vehicle selector. Doc 14, Q26.
 
 Times must be interpreted in **location-local** time, not device time — a Chicago
 resident scheduling from a phone set to New York time must not get an 8am car at 7am.
@@ -161,19 +179,23 @@ resident scheduling from a phone set to New York time must not get an 8am car at
 | Vehicle card | See below |
 | Add | `+ Add a vehicle` — bordered white button |
 
-**Vehicle card**
+**Vehicle card** — note the prototype's `Add photo` control is **removed**:
 
 ```
 ┌──────────────────────────────────────────────┐
 │ Silver Toyota Camry           PP-1042        │  ← name bold navy, id muted
-│ ┌──────┐  ┌──────────────┐                   │
-│ │ No   │  │ 🖼 Add photo  │                   │
-│ │ photo│  └──────────────┘                   │
+│ ┌──────┐                                     │
+│ │ 🚗   │   ← generic image, derived from     │
+│ │ img  │      make + model + colour          │
 │ └──────┘                                     │
 │ [ Toyota ] [ Camry  ] [ Silver ]             │  ← 3 inline editable inputs
 │ (Approval required)          [Submit change] │  ← pill + filled red button
 └──────────────────────────────────────────────┘
 ```
+
+Changing the colour changes the rendered image. Preview the new image live as the
+customer edits *(proposed)* — it makes the generic-image system legible instead of
+surprising.
 
 Fields are directly editable inline — no separate edit mode. The `Approval required`
 pill sits to the left of **Submit change** as a persistent reminder that edits are not
@@ -183,7 +205,8 @@ Critical behavior *(see doc 04)*: submitting a change does **not** alter the dis
 values. The card keeps showing the live record; the pending change surfaces only in
 the banner and in the manager's approval queue.
 
-**Add photo** sits outside the approval row and appears to apply immediately.
+**No photo upload exists.** *"Generic vehicle images. No customer photo uploads."* —
+client requirement, for data load and privacy exposure. See doc 03.
 
 ---
 
@@ -200,10 +223,40 @@ rather than navigating away.
 | Notice | 🛡 *"New vehicles require garage-manager approval before they become active."* |
 | Actions | **Submit for approval** (filled red) · **Cancel** (bordered white) |
 
-The customer never enters the identifier (decal / apartment / stall). That value is
-assigned by staff — `PP-1310` appears on the manager's approval card for a vehicle the
-customer submitted without it. **Identifier assignment is a staff responsibility**, and
-the manager's approval UI needs a field for it. Doc 14, Q3.
+On the prototype's approval card, `PP-1310` appears against a vehicle the customer
+submitted — consistent with the client's statement that the customer provides the
+identifier at registration.
 
-Photo upload is not offered at creation, only on an existing vehicle. Consider adding
-it *(proposed)* — the photo is what a valet uses to find the car.
+**The customer enters the identifier.** Client-confirmed: registration collects *"name,
+vehicle information, unit / decal number."* The field is labelled from
+`location.identifier_type` — "Decal number" at Wacker Drive, "Apartment number" at River
+North. The manager **verifies** it at approval rather than assigning it.
+
+Add the identifier field to this form; the prototype omits it.
+
+
+---
+
+## C8 · Notification preferences *(new — client requirement)*
+
+Not in the prototype. Added from the brief:
+
+> *"Notify on 'Ready' as the default. The customer's required notification is when the
+> vehicle is ready."*
+> *"Optional earlier updates. Customers may opt in to 'Retrieving Vehicle' status updates
+> via a notification-preference toggle."*
+> *"In-app push notifications only. No SMS."*
+
+| Control | Type | Default | Copy |
+|---|---|---|---|
+| **Vehicle ready for pickup** | Toggle | **on** | *"We'll let you know the moment your vehicle is at the door."* |
+| **Retrieving your vehicle** | Toggle | **off** | *"Get an earlier update when a valet accepts your request."* |
+
+**Recommendation *(proposed)*: make the Ready toggle non-disableable in MVP** — render it
+on and locked with an explanatory caption. It is the notification the product exists to
+deliver, and push is the only channel. A customer who switches it off has silently
+downgraded themselves to the experience they were trying to escape.
+
+Reachable from the customer's account/profile area and from the bell. Requires push
+permission priming on first launch — ask *after* the first successful request, not on
+cold start, so the ask has context.

@@ -4,12 +4,18 @@ The prototype is a client-side demo with no observable network layer. Everything
 is an engineering proposal derived from the screens and the domain model. It is meant
 to be argued with, then frozen.
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Changed:** photo-upload endpoints deleted (§4.1); the staff serializer splits into a
+> valet tier without phone numbers (§4.2); notification preferences added (§6.4);
+> escalated-approval endpoints added (§6.1); every path is tenant-scoped (§6.3).
+
 **Conventions**
 
 - REST over JSON. `/api/v1`.
-- Bearer token auth. Every request is scoped server-side by the principal's role and
-  locations — **never trust a `location_id` supplied by the client** except as a filter
-  within the authorized set.
+- Bearer token auth. Every request is scoped server-side by the principal's **tenant**,
+  role and locations — **never trust a `tenant_id` or `location_id` supplied by the
+  client** except as a filter within the authorized set. Tenant scoping is enforced at
+  the data-access layer; a licensed product cannot rely on controllers remembering.
 - Timestamps: ISO-8601 UTC. Every response that renders a date also returns the
   location's IANA timezone so the client formats locally.
 - Errors: RFC 9457 problem-details.
@@ -22,28 +28,43 @@ to be argued with, then frozen.
 
 The single most important rule in this contract.
 
-```
-VehicleCustomer          VehicleStaff
-  id                       id
-  make model color         make model color
-  identifier               identifier
-  photo_url                photo_url
-  status                   status
-                        +  notes[]              ← STAFF ONLY
-                        +  customer { name, phone }
+**Three tiers, not two.** The client's privacy restriction on valet phone access splits
+the staff serializer.
 
-RequestCustomer          RequestStaff
-  id status type           id status type
-  requested_at             requested_at accepted_at ready_at
-  scheduled_for            scheduled_for
-  vehicle (customer)       vehicle (staff)
-  progress[]               customer { name, phone }
-                        +  parking_location      ← STAFF ONLY
-                        +  notes[]               ← STAFF ONLY
+```
+  ── CUSTOMER ──────────    ── VALET ──────────────    ── MANAGER / ADMIN ────────
+  VehicleCustomer            VehicleValet               VehicleManager
+    id                         id                         id
+    make model color           make model color           make model color
+    identifier                 identifier                 identifier
+    image_key                  image_key                  image_key
+    status                     status                     status
+                            +  notes[]                 +  notes[]
+                            +  customer { name }       +  customer { name, phone, email }
+                                       ▲
+                            NO PHONE ──┘
+
+  RequestCustomer            RequestValet               RequestManager
+    id status type             id status type             id status type
+    requested_at               requested_at               requested_at accepted_at
+    scheduled_for              scheduled_for ready_at     ready_at completed_at
+    vehicle (customer)         vehicle (valet)            vehicle (manager)
+    progress[]              +  parking_location        +  parking_location
+    can_cancel              +  notes[]                 +  notes[]
+                            +  customer { name }       +  customer { name, phone }
 ```
 
-`parking_location` and `notes` must be **structurally absent** from customer
-serializers, not merely null. Enforce with a serializer test per role.
+Three rules, each enforced by a serializer test:
+
+1. `parking_location` and `notes` are **structurally absent** from customer serializers,
+   not null.
+2. `phone` is **structurally absent** from every valet-tier serializer. Client
+   requirement: *"CANNOT … view customer phone numbers."* Doc 02.
+3. `image_key` is derived server-side from make/model/colour. It is never writable and
+   there is no upload path.
+
+`RequestCustomer.can_cancel` is server-computed (`status == "pending"`) so the client
+never has to re-derive the cancellation rule.
 
 ---
 
@@ -77,26 +98,35 @@ what to call the identifier field before rendering it. Rate-limit it — it is a
 
 ```
 GET    /me/vehicles                       → VehicleCustomer[]
-POST   /me/vehicles                       { make, model, color }
+POST   /me/vehicles                       { make, model, color, identifier }
                                           → 202 + ApprovalRequest
 PATCH  /me/vehicles/:id                   { make?, model?, color? }
                                           → 202 + ApprovalRequest  (live record unchanged)
-POST   /me/vehicles/:id/photo             multipart → { photo_url }
 
 GET    /me/requests?status=active         → RequestCustomer[]
-POST   /me/requests                       { vehicle_id, type: "immediate" }
+POST   /me/requests                       { vehicle_id, type: "immediate" }   ← "Request Now"
 POST   /me/requests                       { vehicle_id, type: "scheduled",
                                             scheduled_for }
 GET    /me/requests/:id                   → RequestCustomer
-DELETE /me/requests/:id                   → cancel
+DELETE /me/requests/:id                   → cancel  — 409 unless status == "pending"
 
 GET    /me/notifications
 POST   /me/notifications/:id/read
+GET    /me/notification-preferences       → { notify_ready, notify_retrieving }
+PUT    /me/notification-preferences       { notify_ready?, notify_retrieving? }
+POST   /me/push-token                     { token, platform }
 ```
 
 `202` on vehicle create/update is the contract expression of "this needs approval" —
 the response body carries the pending `ApprovalRequest` so the client can render the
 amber banner immediately.
+
+**No photo endpoint exists.** Vehicle images are derived from make/model/colour; there is
+no upload path anywhere in this API. Client requirement, doc 00 §4.1.
+
+**`DELETE /me/requests/:id` returns `409` once a valet has accepted.** Client-decided:
+cancellation is permitted *before acceptance only*. The client already knows this from
+`can_cancel`, but the server is the authority and the race is real.
 
 `RequestCustomer.progress` is a server-rendered three-node array so the customer
 vocabulary lives in exactly one place:
@@ -123,10 +153,12 @@ POST   /valet/requests/:id/revert         → RequestStaff        (→ pending)
 POST   /valet/requests/:id/activate       → RequestStaff        ("Move to active")
 PUT    /valet/requests/:id/parking-location   { parking_location }
 POST   /valet/requests/:id/notes          { body } → Note
+POST   /valet/requests/:id/notify-manager { reason } → escalation to the manager
+                                          (replaces direct phone access — doc 07 · V2)
 
-GET    /valet/directory/customers?q=
+GET    /valet/directory/customers?first_name=   ← client-named search behavior
 GET    /valet/directory/vehicles?q=
-GET    /valet/directory/recent-pickups
+GET    /valet/directory/recent-pickups          ← 2-3 day window
 ```
 
 `GET /valet/board` returns the four buckets pre-computed server-side, because bucketing
@@ -147,8 +179,14 @@ Shipping `chime` and `awaiting_acceptance` in the board payload means the tablet
 no second call to decide whether to sound the alert.
 
 **`accept` is a compare-and-swap.** If `status != "pending"`, return `409` with the
-current state so the losing tablet can show *"Already accepted by another valet"*
-rather than appearing broken.
+current state so the losing tablet can show *"Already accepted by another valet"* — or
+*"The customer cancelled this request"* — rather than appearing broken. The same CAS
+resolves the accept-vs-cancel race.
+
+**No valet response may contain a phone number.** Enforce it in the serializer, and add a
+contract test that fails the build if `phone` appears in any `/valet/*` response body.
+This is the kind of requirement that gets re-broken six months later by someone adding a
+convenience field.
 
 ---
 
@@ -163,12 +201,11 @@ GET    /manager/approvals/:id             → full submission  ("Review")
 POST   /manager/approvals/:id/approve     { identifier? }
 POST   /manager/approvals/:id/reject      { reason? }
 
-GET    /manager/customers?q=&sort=&dir=
+GET    /manager/customers?first_name=&q=&sort=&dir=   ← first-name is the primary path
 POST   /manager/customers                 { name, email, phone, identifier,
                                             vehicle? }   ← "Add customer", pre-approved
 GET    /manager/customers/:id
 PATCH  /manager/vehicles/:id              { make?, model?, color?, identifier? }
-POST   /manager/vehicles/:id/photo
 
 GET    /manager/history?from=&to=&q=&sort=
 GET    /manager/valet-accounts
@@ -179,10 +216,15 @@ POST   /manager/valet-accounts/:id/reset-password → { temporary_password }
 
 GET    /manager/settings/chime
 PUT    /manager/settings/chime            { enabled, repeat_interval_seconds, volume }
+
+GET    /manager/availability              → { available, away_until, backup_admin }
+PUT    /manager/availability              { available, away_until? }
+                                          ← away routes approvals to the office at once
 ```
 
-`approve` optionally carries `identifier` because the manager assigns the decal /
-apartment / stall at approval time — the customer never enters it (doc 06 · C7).
+`approve` optionally carries `identifier` because the manager **verifies and may
+correct** the decal / apartment / unit number the customer supplied at registration. The
+customer provides it; the manager confirms it against the property's records.
 
 `reset-password` returns a one-time plaintext value because *nothing is emailed*. Return
 it exactly once, never store it in the clear, and log the event.
@@ -212,15 +254,25 @@ POST   /admin/locations/:id/disable
 POST   /admin/locations/:id/enable
 
 GET    /admin/activity?location_id=&role=&verb=&from=&to=&q=&cursor=
+       ← permanent archive; page over years, not days
+
+GET    /admin/approvals/escalated         → SLA-breached + manager-away approvals
+POST   /admin/approvals/:id/approve       { identifier? }   ← full manager authority
+POST   /admin/approvals/:id/reject        { reason? }
+POST   /admin/approvals/:id/nudge         → ping the assigned manager
+
 GET    /admin/settings/policies
-PUT    /admin/settings/policies
+PUT    /admin/settings/policies           { ..., approval_sla_registration_hours,
+                                            approval_sla_vehicle_change_hours,
+                                            valet_history_visible_days }
 ```
 
 `GET /admin/console` shape:
 
 ```json
 { "totals": { "locations": 5, "active_requests": 6,
-              "pending_approvals": 6, "customers": 10 },
+              "pending_approvals": 6, "customers": 10,
+              "escalated_approvals": 0 },
   "by_location": [
     { "id": "...", "name": "Wacker Drive Garage",
       "address": "225 N. Wacker Dr, Chicago, IL",
@@ -245,8 +297,11 @@ WS /ws?scope=user:{id}         customer
 → { "event": "request.completed","request": RequestStaff }
 → { "event": "request.cancelled","request_id": "..." }
 → { "event": "approval.created", "approval": ApprovalRequest }
+→ { "event": "approval.escalated","approval": ApprovalRequest }
 → { "event": "chime.updated",    "chime": {...} }
 ```
 
-Customer-scope sockets receive the **customer** serializer of the same events. One
-event bus, two serializers, enforced at the boundary.
+Customer-scope sockets receive the **customer** serializer; valet-scope sockets receive
+the **valet** serializer; manager and admin scopes receive the **manager** serializer.
+One event bus, three serializers, enforced at the boundary — the same three-tier split
+as the REST surface, for the same reason.

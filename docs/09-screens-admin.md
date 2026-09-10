@@ -1,6 +1,10 @@
 # 09 — Screens: Office Admin
 
-Desktop, left sidebar + content. Five screens. Same chrome as Manager, except the
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Added:** an escalated-approvals queue for the manager-absence backup (§6.1), the
+> client's single flagged prototype gap. Retention copy corrected (§4.4).
+
+Desktop, left sidebar + content. Six screens. Same chrome as Manager, except the
 header location control is a **dropdown** rather than a static label.
 
 ---
@@ -18,6 +22,11 @@ Title **Office Console**; subtitle *"Cross-location operational overview for off
 | Active requests | 🚗 | 6 |
 | Pending approvals | ☑ | 6 |
 | Total customers | 👥 | 10 |
+
+**Add a fifth tile: `Escalated approvals`** *(client requirement)*. Approvals past their
+SLA because a manager is unavailable must be visible to the office at a glance, and
+actionable — this is the mechanism behind *"pending approvals must not stall on manager
+absence."* Style it as the alarm state: when non-zero, red numeral and a link into A6.
 
 Large navy numeral over a slate label. Icon top-left, muted. Equal-width cards.
 
@@ -189,9 +198,15 @@ The parenthetical *"(Advanced analytics dashboards are out of scope.)"* is a sco
 boundary written by the product owner into the UI. Respect it: this is a legible feed,
 not a BI surface.
 
-**Must be built:** filters (location, role, verb, date range), search by customer or
-vehicle, pagination, and — given the dispute-resolution mandate — a permalink per event
+**Must be built:** filters (location, role, verb, date range), first-name search,
+pagination, and — given the dispute-resolution mandate — a permalink per event
 *(proposed)*.
+
+**This feed is the permanent record.** The client retains full historical activity
+indefinitely for *"metrics and reporting, customer complaints, legal support, and
+vehicle-related disputes."* Unlike the valet board and manager history, **nothing here
+expires.** Build it to page over years, not days, and log escalations and admin
+overrides into it as first-class events.
 
 ---
 
@@ -206,16 +221,25 @@ Title **Settings & Operational Policies**; subtitle *"System-wide operational se
 
 ### Card `OPERATIONAL POLICIES` — four toggles, all default on
 
+Plus two new settings required by the brief *(client requirement)*:
+
+| Setting | Type | Default | Governs |
+|---|---|---|---|
+| **Approval SLA — new registrations** | Duration | 4 business hours | When an approval escalates to the office (doc 04 §6) |
+| **Approval SLA — vehicle changes** | Duration | 24 hours | As above, slower — a colour change is not time-sensitive |
+
 | Toggle | Sub-copy | Governs |
 |---|---|---|
-| **Require manager approval for new customers** | *"New registrations stay pending until a garage manager approves."* | Onboarding, doc 04 §2 |
+| **Require manager approval for new customers** | *"New registrations stay pending until a garage manager approves."* | Onboarding, doc 04 §2. **Keep on by default** — it is the compensating control for a 6-digit access code (doc 13 §3) |
 | **Require approval for vehicle changes** | *"Customer-submitted vehicle changes need manager approval before taking effect."* | Approvals, doc 04 §3 |
-| **Retain completed requests ~7 days** | *"Completed request history is visible to staff for about a week."* | Retention, doc 04 §6 |
+| **Retain completed requests ~7 days** | *"Completed request history is visible to staff for about a week."* | **Superseded** — 2–3 days for the valet view, permanent in the backend. See below and doc 04 §8 |
 | **Internal operational notes** | *"Staff-only notes on customers/vehicles, visible to valet and manager."* | Notes feature flag |
 
-The third is a toggle in the prototype but its label carries a number ("~7 days"). It
-should be a **numeric setting**, not a boolean *(proposed)* — otherwise "off" has no
-defined meaning (retain forever? never?).
+The third is wrong on two counts. It is a toggle whose label carries a number, and the
+number is wrong: **the client stated 2–3 days for the valet view**, and backend retention
+is **permanent**. Replace it with a numeric `valet_history_visible_days` setting
+(default 3) and add a read-only line stating that full history is retained indefinitely
+in the system of record — so nobody mistakes a view window for a deletion policy.
 
 Note the fourth toggle's copy says notes are on *"customers/vehicles"*, while the valet
 UI renders notes inside the *request* modal. Corroborates the doc 03 recommendation to
@@ -231,3 +255,36 @@ location dropdown. Recommendation *(proposed)*: implement everything as **system
 with per-location override**, and label each control with its effective scope. This
 satisfies both screens and avoids a migration when the first location asks for an
 exception.
+
+
+---
+
+## A6 · Escalated Approvals *(new — client requirement)*
+
+Not in the prototype. This screen exists because of the client's single flagged gap:
+
+> *"Must be able to intervene when a garage manager is unavailable … **Pending approvals
+> must not stall on manager absence.**"*
+
+| Element | Spec |
+|---|---|
+| Title | **Escalated Approvals** |
+| Subtitle | *"Approvals that have passed their response window, or whose manager is marked away."* |
+| Grouping | By location, most-overdue first |
+| Row | Approval kind badge · subject · location · **time overdue** (red) · manager name and availability |
+| Actions | **✓ Approve** · **✕ Reject** · **Nudge manager** |
+
+Rules:
+
+- An approval reaches this queue **automatically** on SLA breach, or **immediately** when
+  its manager is marked away (doc 08 · M7). Automatic, not pull — a queue that depends on
+  someone noticing reproduces the exact failure being fixed.
+- The manager keeps the ability to act after escalation. Escalation widens who can act;
+  it never locks the manager out. Handle the race: first decision wins, second sees the
+  outcome.
+- Every escalation and every admin decision writes an `ActivityEvent` naming the actor
+  and the reason (`sla_breach` / `manager_away`).
+- Notify the Office Admin on escalation — this is one of the few push-worthy staff events.
+
+Also surfaced as a KPI tile on A1 and as a sidebar badge, so an admin who never opens
+this screen still sees the count.

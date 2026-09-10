@@ -1,9 +1,18 @@
 # 03 — Domain Model
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> Changes made against the prototype: vehicle photos replaced by generic images (§4.1),
+> permanent backend retention (§4.4), tenant layer for licensing (§6.3), notification
+> preferences (§6.4).
+
 ## Entity relationship
 
 ```
                           ┌──────────────┐
+                          │    Tenant    │  operator (Pioneer = tenant #1)
+                          └──────┬───────┘
+                                 │
+                          ┌──────▼───────┐
                           │   Location   │  identifier_type, access_code
                           └──────┬───────┘
              ┌───────────────────┼───────────────────┬──────────────────┐
@@ -33,13 +42,38 @@
 
 ---
 
-## Location
+## Tenant
 
-The tenancy root. Everything hangs off it.
+The licensing root. **Required from day one** — the client's mandate is to design the
+product for licensing to other parking operators, and tenant isolation is cheap now and
+expensive later.
 
 | Field | Type | Notes |
 |---|---|---|
 | `id` | uuid | |
+| `name` | string | "Pioneer Parking" — tenant #1 |
+| `slug` | string | Used for scoping, never shown to customers |
+| `theme` | json | **Seam only.** Populate with Pioneer's palette; do not build a theming UI in MVP |
+| `status` | enum | `active` \| `suspended` |
+
+Every table below carries `tenant_id`, and every query is scoped to it. Enforce at the
+data-access layer, not in controllers — a single missed `WHERE` in a licensed product is
+a cross-operator data leak.
+
+**Do not name anything after Pioneer.** Not tables, not API paths, not enum values, not
+CSS classes. Brand lives in `Tenant.theme` and nowhere else. *"Company structure, product
+name and branding must stay flexible."*
+
+---
+
+## Location
+
+The operational root within a tenant. Everything operational hangs off it.
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | uuid | |
+| `tenant_id` | fk Tenant | |
 | `name` | string | "Wacker Drive Garage" |
 | `address` | string | "225 N. Wacker Dr, Chicago, IL" |
 | `state` | string | Surfaced as a grouping label on the location card |
@@ -50,10 +84,10 @@ The tenancy root. Everything hangs off it.
 | `status` | enum | `active` \| `disabled` |
 | `created_at` | ts | |
 
-`identifier_type` is presented in the Add Location form as a simple `Identifier`
-dropdown and rendered on the location card as a labeled stat. **Model it as a
-lookup table, not a hard enum** *(proposed)* — new property types will want new
-labels, and this is the cheapest possible extension point.
+`identifier_type` is client-confirmed: *"Simple location setup with one primary
+identifier per location: decal number, apartment number or unit number, whichever that
+property uses."* **Model it as a lookup table, not a hard enum** *(proposed)* — a
+licensed operator will bring a label Pioneer never used.
 
 Access codes must be **unique across active locations** *(inferred)* — a customer
 enters only the code at sign-up, so a collision would route them to the wrong
@@ -96,8 +130,8 @@ every staff row.
 | `make` | string | "Toyota" |
 | `model` | string | "Camry" |
 | `color` | string | "Silver" |
-| `identifier` | string | `PP-1042` — semantics come from `location.identifier_type` |
-| `photo_url` | string? | Optional. Empty state renders a `No photo` placeholder tile |
+| `identifier` | string | `PP-1042` — semantics come from `location.identifier_type`. **Entered by the customer at registration**, verified by the manager at approval |
+| `image_key` | string | **Derived, never uploaded.** Resolved from make + model + colour against the generic-image mapping set |
 | `status` | enum | `pending_approval` \| `active` \| `rejected` |
 | `created_at` | ts | |
 
@@ -107,7 +141,31 @@ Camry"*, *"Forest Green Rivian R1S"*. Consistent across all four roles' screens.
 Identifiers observed follow `PP-####` at garage locations. Whether that prefix is a
 Pioneer Parking convention or free text is unresolved — see doc 14.
 
-A customer may hold multiple vehicles (Grace Kim: *Subaru Outback, Tesla Model Y*).
+A customer may hold multiple vehicles (Grace Kim: *Subaru Outback, Tesla Model Y*) —
+client-confirmed.
+
+### Generic vehicle images — a client requirement, and a real deliverable
+
+> *"Generic vehicle images. No customer photo uploads. The system auto-generates or maps
+> a generic image from make, model and color. Rationale: reduces data load and avoids
+> privacy exposure. VisMedAI to define the brand / model / color to image mapping set."*
+
+There is **no photo upload anywhere in this product.** The prototype's `Add photo`
+control and `No photo` placeholder are both removed.
+
+```
+  (make, model, color)  ──►  resolver  ──►  image_key  ──►  rendered asset
+     "Toyota","Camry","Silver"          "sedan/silver"
+```
+
+Design the resolver as **body-style + colour**, not make + model *(proposed)*. A
+per-model asset library is unbounded and will never be complete; a dozen body styles
+(sedan, SUV, pickup, van, coupe, hatchback, wagon, EV-crossover…) crossed with a
+standard colour set covers the entire vehicle population with ~150 assets and degrades
+gracefully to a neutral silhouette on an unknown input.
+
+Store the *inputs* and resolve at render time so the mapping can improve without a data
+migration. This is VisMedAI action item 04 and has a long tail — start it early.
 
 ---
 
@@ -139,7 +197,7 @@ The central operational record.
 local date. Do not persist a bucket column — it goes stale at midnight.
 
 **Timezone matters.** Locations span Chicago (CT), Orlando (ET), and New York (ET).
-Bucketing, the *"Later today"* quick option, and the ~7-day retention window must all
+Bucketing, the *"Later today"* quick option, and the history view window must all
 evaluate in **location-local time**. Store UTC, render and bucket local.
 
 ---
@@ -240,13 +298,51 @@ location; the Admin screen shows the same block under a location selector).
 | `repeat_interval_seconds` | int | `6` |
 | `volume` | enum | `low` \| `medium` \| `high` → `medium` |
 
+### Retention is permanent — the UI window is not
+
+> *"Full historical activity retained **permanently** in the backend repository.
+> Purposes: metrics and reporting, customer complaints, legal support, and
+> vehicle-related disputes."*
+> *"Split from the UI: the valet-facing interface shows only recent activity (2–3 days);
+> retention happens behind it."*
+
+Two independent settings, not one:
+
+| Setting | Value | Meaning |
+|---|---|---|
+| `valet_history_visible_days` | **2–3** (client-stated) | What drops off the valet board |
+| Backend retention | **Indefinite** | What the business keeps for disputes and legal |
+
+The prototype's "~7 days" copy is superseded. Nothing is deleted; the *view* is
+windowed. This obligates a written retention and access policy — see doc 13 §4.
+
+---
+
+## NotificationPreference
+
+New scope from the brief. Per customer.
+
+| Field | Type | Default | Notes |
+|---|---|---|---|
+| `user_id` | fk User | | |
+| `notify_ready` | bool | `true` | **Required notification.** Consider making it non-disableable |
+| `notify_retrieving` | bool | `false` | Opt-in — *"customers may opt in to 'Retrieving Vehicle' status updates"* |
+| `push_token` | string? | | Device token; push is the only channel |
+
+> *"Notify on 'Ready' as the default. The customer's required notification is when the
+> vehicle is ready."* — treat `notify_ready` as effectively mandatory; a customer who
+> disables it defeats the product's purpose. Recommendation *(proposed)*: not toggleable
+> in MVP.
+
+---
+
 **`OperationalPolicy`** — system-wide, Admin only. All four default to on.
 
 | Key | Effect |
 |---|---|
 | `require_manager_approval_new_customers` | New registrations stay `pending` until approved |
 | `require_approval_vehicle_changes` | Customer vehicle edits need approval before taking effect |
-| `retain_completed_requests_days` | Completed history visible to staff (~7 days) |
+| `valet_history_visible_days` | Completed history visible on the valet board — **client says 2–3 days**, not 7. Backend retention is separate and permanent |
 | `internal_operational_notes_enabled` | Staff-only notes feature flag |
 
 The Admin settings page carries the caveat *"Policy toggles are representative; sound

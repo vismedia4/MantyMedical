@@ -1,21 +1,62 @@
 # 13 — Non-Functional Requirements
 
+> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
+> **Changed:** retention is permanent, not 7 days (§4.4); no photo uploads, so the
+> photo-privacy section is retired (§4.1); valets cannot see phone numbers (§4.2);
+> app-store deployment is required (§4.7); tenant isolation is a day-one mandate (§6.3).
+
+## 0. Tenant isolation — the licensing mandate
+
+> *"The app should be designed as a product other parking operators can license, not a
+> Pioneer-only internal tool."*
+
+The brief's own risk register frames the tradeoff and lands on the answer:
+
+> *"Multi-tenancy, per-tenant branding and per-tenant credentials are architectural
+> decisions that are cheap now and expensive later — but they are not free in the MVP.
+> Recommendation: build true tenant isolation into the data model from day one; defer
+> white-label theming and any operator-facing admin surface."*
+
+**Adopted.** What that means concretely:
+
+| In MVP | Deferred |
+|---|---|
+| `tenant_id` on every table | Per-tenant theming UI |
+| Tenant scoping enforced at the data-access layer, not in controllers | Operator-facing admin surface |
+| Cross-tenant isolation tests in CI | Per-tenant custom domains |
+| Brand values in `Tenant.theme`, never hard-coded | Tenant self-service onboarding |
+
+**Test isolation like a security control, because it is one.** In a single-operator app,
+a missing `WHERE tenant_id` is a bug. In a licensed product it is one operator reading
+another operator's residents. Write the negative tests first: a token from tenant A must
+return 404 — not 403 — for every tenant B resource.
+
+And keep the name out of the code. *"Company structure, product name and branding must
+stay flexible."* No `pioneer_` table prefixes, no `/api/pioneer/...`, no brand strings
+outside the theme layer.
+
+---
+
 ## 1. The shared valet tablet — the dominant security problem
 
 *"One login stays signed in on the tablet."*
 
 That single design decision creates most of the security surface in this product. An
-always-authenticated device sits in a semi-public garage, holding a directory of
-resident names, phone numbers, vehicles, and — via parking location — **where each
-resident's car is parked right now**. For a residential building, that is a stalking
-and vehicle-theft toolkit.
+always-authenticated device sits in a semi-public garage, holding a directory of resident
+names, vehicles, and — via parking location — **where each resident's car is parked right
+now**. For a residential building, that is a stalking and vehicle-theft toolkit.
+
+**The client already removed the worst of it.** Phone numbers are barred at the valet
+role: *"view customer phone numbers — called out by Jonathan as a privacy restriction."*
+That instinct is correct and the remaining controls follow the same logic.
 
 ### Required controls
 
 | Control | Requirement |
 |---|---|
 | **Device binding** | Bind the station session to a registered device. A stolen credential must not open the board from an arbitrary browser |
-| **Data minimisation on screen** | The prototype already does this well: first names on cards, full name and phone only inside the detail modal. **Preserve it** — do not "improve" the board by adding surnames |
+| **Data minimisation on screen** | First names on cards, full name only inside the detail modal, **no phone numbers at all**. Preserve it — do not "improve" the board by adding surnames or contact details |
+| **Phone numbers excluded at the API tier** | Client requirement. Enforce in the valet serializer with a contract test, not in the template (doc 11) |
 | **Screen timeout** | Board dims/locks after N minutes idle; a **short PIN** (not the full password) returns to the board. Never sign the station out — the whole point is that it stays available |
 | **Immediate revocation** | Suspending a valet account terminates live sessions at once and the tablet drops to a lock screen |
 | **No customer PII export** | No download, copy-all, or print on the valet directory |
@@ -25,9 +66,31 @@ and vehicle-theft toolkit.
 ### Also required, and easy to miss
 
 - **Physical placement guidance for operators.** A board angled toward a public lobby is
-  a data leak no software control can fix. Write it into the deployment guide.
+  a data leak no software control can fix. Write it into the deployment guide — and note
+  that in a licensed product, *the operator* follows that guide, not Pioneer.
 - **Rotation on staff turnover.** Shared credentials outlive the people who knew them.
   Force a rotation cadence — quarterly, and on any departure.
+
+### Device reliability is a named client risk, not just a security matter
+
+> *"The persistent chime is the operational backbone of the workflow. Device sleep
+> behavior, connectivity loss and background-notification handling on dedicated tablets
+> will determine whether the app actually beats ElimaWait on reliability — which is the
+> entire premise for replacing it. Worth an explicit line item."*
+
+Treat it as one. Required behaviors on the chosen tablet, all verified on the actual
+hardware:
+
+| Behavior | Requirement |
+|---|---|
+| **Screen sleep** | The board must never sleep during operating hours. Kiosk/guided-access policy plus a wake lock |
+| **App backgrounding** | If the OS backgrounds the app, the chime must survive or the app must return to foreground on a new request |
+| **Wi-Fi drop** | Reconnect with backoff; unmissable stale-state banner; full board refetch on reconnect |
+| **Overnight reboot** | Auto-relaunch into the board, re-arm audio permission, and alert if it cannot |
+| **Audio permission lost** | Persistent "tap to enable alerts" bar, and a heartbeat that tells the manager the stand is silent |
+
+This is the single highest-value test matrix in the project. It is also why the tablet
+model must be pinned before the first sprint (doc 14, Q3).
 
 ---
 
@@ -80,7 +143,7 @@ it is the compensating control that makes a 6-digit code acceptable.
 | Name, email, phone | Customers | Standard PII |
 | Home address by proxy | Residential customers | **The location *is* their home** |
 | Vehicle make/model/colour/identifier | Customers | Identifying; links a person to a car |
-| Vehicle photos | Customers | May capture plates, interiors, faces |
+| ~~Vehicle photos~~ | — | **Eliminated by design.** Generic images only — *"reduces data load and avoids privacy exposure"* |
 | Parking location | Customers | **Real-time physical location of a person's vehicle** |
 | Retrieval history | Customers | **A movement pattern** — when they leave and come home |
 
@@ -89,21 +152,43 @@ behavioral profile of a resident's comings and goings.
 
 ### Requirements
 
-- **Purpose limitation.** History exists for dispute resolution — the product says so.
-  Do not repurpose it for analytics without a separate decision and disclosure.
-- **Retention.** Operational visibility is ~7 days. Define separately, and in writing:
-  how long the `ActivityEvent` log is kept, and how long request records survive
-  deletion from staff views. Recommendation *(proposed)*: operational 7 days, audit 12
-  months, then anonymise.
+- **Retention is permanent — and that is a client decision, not an oversight.**
+
+  > *"Full historical activity retained permanently in the backend repository. Purposes:
+  > metrics and reporting, customer complaints, legal support, and vehicle-related
+  > disputes."*
+
+  Two independent windows: the **valet view** shows 2–3 days; the **backend** keeps
+  everything indefinitely. Nothing is deleted by the retention job — it only narrows a view.
+
+- **Indefinite retention obligates a written policy.** The brief names this as a risk:
+
+  > *"Indefinite retention for legal and dispute purposes is defensible, but it needs a
+  > written retention and access policy — especially given the deliberate restriction of
+  > phone numbers from valets. The policy belongs in scope, not as an afterthought."*
+
+  In scope. It must state: what is retained, for how long, who may access it, under what
+  authorisation, how access is logged, and how a customer exercises deletion rights
+  against a permanent archive. The last one is the hard part and needs counsel —
+  "permanent" and "right to erasure" are in tension, and the resolution is usually a
+  documented legal-basis carve-out plus pseudonymisation of everything outside it.
+
+- **Purpose limitation.** History exists for metrics, complaints, legal support and
+  vehicle disputes — the client enumerated them. Do not repurpose it beyond that list
+  without a separate decision and disclosure.
 - **Deletion / export.** Customer-initiated account deletion and data export. Multi-state
   operation (IL, FL, NY) means state privacy regimes apply; NY and FL both have active
   consumer-privacy obligations. **Get counsel before launch** — flagged, not resolved,
   here.
-- **Photo handling.** Strip EXIF (including GPS) on upload. Serve from signed,
-  short-lived URLs, never a public bucket.
+- **No user-supplied media anywhere.** The generic-image decision removes an entire
+  class of privacy exposure — EXIF/GPS leakage, plates and faces in uploads, moderation
+  burden, and storage cost. It is the cheapest privacy win in the product; do not
+  reintroduce uploads later without revisiting this section.
 - **Cross-location isolation.** A manager at River North must not read State Street
-  customers. Test this explicitly — it is the failure mode that turns one bad token into
-  a portfolio-wide breach.
+  customers. A customer record belongs to exactly one location — *"location-specific
+  customer databases."* Test explicitly.
+- **Cross-tenant isolation.** See §0. In a licensed product this is the failure mode that
+  turns one bad token into a breach across operators.
 
 ---
 
@@ -164,13 +249,26 @@ everything else.
 
 | Surface | Target |
 |---|---|
-| Customer | iOS Safari 16+, Chrome Android 110+. Installable PWA |
+| Customer | **Native apps, iOS and Android — app-store deployment is a client requirement.** Target current and current-1 OS versions |
 | Valet | The specific tablet model chosen for deployment — **pin it and test on it**. Assume a long-lived device that may lag on OS updates |
 | Manager / Admin | Evergreen Chrome, Edge, Safari, Firefox. Desktop ≥ 1280px, usable to 1024px |
 
 Name the valet tablet model before the first sprint. Every hard constraint in this
 document — audio autoplay, kiosk mode, screen timeout, offline behavior — resolves
 differently on iPadOS than on Android, and the choice is not reversible cheaply.
+
+### App-store review is on the critical path
+
+> *"Two store submissions sit on the critical path to launch and are outside VisMedAI's
+> control. Build review cycles into the timeline presented Tuesday rather than absorbing
+> them as slippage."*
+
+Practical consequences: budget 1–2 weeks per platform for first submission plus at least
+one rejection cycle; enrol in both developer programmes **now**, since account setup and
+verification alone can take days; and plan for review-triggering changes (push
+permissions, account deletion requirements, privacy nutrition labels) rather than
+discovering them at submission. Apple requires an in-app **account deletion** path for
+apps with account creation — that is a build item, not a policy checkbox.
 
 ---
 
