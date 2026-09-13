@@ -1,3 +1,17 @@
+> ## ⚠ OUT OF SCOPE — DO NOT USE
+>
+> **This document is parked.** Its scope rests on an assumption about the website's
+> current state that was never confirmed, and it was revised twice on incomplete
+> information. Nothing in it should be quoted, costed or presented until the website is
+> picked up as its own piece of work with its own session.
+>
+> The website lives in `PioneerParking/pioneer-website` and is tracked separately from
+> the platform. This documentation set covers the **valet retrieval platform only**.
+>
+> The positioning material below — audience, de-emphasising specific locations, the site
+> as a credibility instrument — came from the 10 September session and is sound. The scope,
+> stack and structure sections are not to be relied on.
+
 # 16 — Website (Workstream 2)
 
 > Source: [00 — Client Requirements](00-client-requirements.md) §2 and the brief's §4.

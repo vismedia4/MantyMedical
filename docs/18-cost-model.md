@@ -1,5 +1,19 @@
 # 18 — MVP Cost & Effort Model *(proposed)*
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 > Bottom-up effort estimate for **workstream 1**, the valet retrieval MVP, derived from the
 > scope in docs 01–15. Prepared for the **Tuesday 15 September** decision point.
 >

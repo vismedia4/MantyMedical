@@ -1,5 +1,19 @@
 # 14 — Open Questions
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 > Updated against the **September 10, 2026 requirements session**
 > ([00 — Client Requirements](00-client-requirements.md)). Eleven of the original
 > twenty-eight questions are now closed — see §Resolved at the bottom.

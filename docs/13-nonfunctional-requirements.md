@@ -1,5 +1,19 @@
 # 13 — Non-Functional Requirements
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 > Requirements authority is [00 — Client Requirements](00-client-requirements.md).
 > **Changed:** retention is permanent, not 7 days (§4.4); no photo uploads, so the
 > photo-privacy section is retired (§4.1); valets cannot see phone numbers (§4.2);

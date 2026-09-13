@@ -1,5 +1,19 @@
 # 19 — Pilot & Full MVP: Scope and Timeline *(proposed)*
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 > For the **Tuesday 15 September** decision. Two things are being priced, and they are
 > not the same purchase. This document says what each one contains, what it deliberately
 > does not, and when it lands.

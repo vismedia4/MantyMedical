@@ -7,3 +7,6 @@ dist/
 build/
 .venv/
 __pycache__/
+
+# Never let the internal brief travel into a client repo by accident.
+# If docs/ is copied elsewhere, drop docs/source/ first.

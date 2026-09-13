@@ -1,5 +1,19 @@
 # 04 — Workflows & State Machines
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 > Requirements authority is [00 — Client Requirements](00-client-requirements.md).
 > The cancellation window (§1) is now client-decided; §6 (manager-absence backup) and
 > §7 (no-smartphone path) are new requirements from the brief.

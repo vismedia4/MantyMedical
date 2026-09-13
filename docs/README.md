@@ -1,5 +1,19 @@
 # Pioneer Connect — Design & Development Documentation
 
+> ## 🔒 INTERNAL — VisMedAI Advisory
+>
+> This documentation set is **internal working material**. It contains effort estimates,
+> day-rate-revealing figures, commercial positioning, and analysis of the client written
+> for our own use. **None of it goes to Pioneer Parking** unless a specific piece is
+> deliberately prepared for that purpose.
+>
+> `docs/source/` holds the **confidential** 10 September Build Brief, including an
+> appendix on commercial matters unrelated to this engagement. **Do not place this
+> directory in any repository the client can read.**
+>
+> The only client-facing deliverable produced from this material is the Tuesday review
+> page, which is written separately and carries none of the above.
+
 **Product:** Valet retrieval platform — prototyped as *Pioneer Connect · Smart Valet Retrieval*
 **Client:** Pioneer Parking (multi-property: garages + residential buildings)
 **Note on the name:** the product is designed for **licensing to other parking
@@ -62,7 +76,7 @@ with the product owner before sprint 1.
 | 15 | [Delivery Plan](15-delivery-plan.md) | Phased scope, milestones, sizing, risk register |
 | **18** | **[Cost & Effort Model](18-cost-model.md)** | **Effort, benchmark and pricing for the Sept 15 decision** |
 | **19** | **[Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md)** | **What each purchase includes, excludes, and when it lands** |
-| 16 | [Website Refresh](16-website-refresh.md) | Workstream 2 — positioning, content, stack |
+| 16 | [Website](16-website-refresh.md) | ⚠ **Parked — out of scope.** Tracked separately in `pioneer-website` |
 | 17 | [Roadmap Beyond MVP](17-roadmap-beyond-mvp.md) | Workstream 3 — transient ticketing, deferred items |
 
 ## Reference screenshots
@@ -112,9 +126,10 @@ locations, staff accounts, six-digit enrollment codes, and system-wide policy.
 
 ## Next decision point
 
-**Tuesday, September 15, 12:00 noon** — VisMedAI presents MVP scope, timeline and cost,
-plus website direction. [19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md) is the
-client-facing answer to all three; [18 — Cost & Effort Model](18-cost-model.md),
-[15 — Delivery Plan](15-delivery-plan.md) and
-[16 — Website Refresh](16-website-refresh.md) feed that meeting;
-[14 — Open Questions](14-open-questions.md) Q1 and Q2 must be closed in it.
+**Tuesday, September 15, 12:00 noon** — VisMedAI presents MVP scope, timeline and cost for
+the **platform**. [19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md) is the
+client-facing answer; [18 — Cost & Effort Model](18-cost-model.md) and
+[15 — Delivery Plan](15-delivery-plan.md) are the internal working behind it;
+[14 — Open Questions](14-open-questions.md) Q1 and Q2 must be closed in the session.
+
+The website is a separate concern and is not covered here.
