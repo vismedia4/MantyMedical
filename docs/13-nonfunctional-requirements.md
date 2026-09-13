@@ -180,10 +180,22 @@ behavioral profile of a resident's comings and goings.
   operation (IL, FL, NY) means state privacy regimes apply; NY and FL both have active
   consumer-privacy obligations. **Get counsel before launch** — flagged, not resolved,
   here.
-- **No user-supplied media anywhere.** The generic-image decision removes an entire
-  class of privacy exposure — EXIF/GPS leakage, plates and faces in uploads, moderation
-  burden, and storage cost. It is the cheapest privacy win in the product; do not
-  reintroduce uploads later without revisiting this section.
+- **No *customer-supplied* media.** The generic-image decision removes an entire class of
+  privacy exposure — EXIF/GPS leakage, plates and faces in uploads, moderation burden and
+  storage cost. It is the cheapest privacy win in the product.
+
+- **Staff-captured custody evidence is a different thing, and it is real.** Identity 1.1
+  names a fourth product, **Record — Verified Custody Record™**, *"condition at intake and
+  return, sealed,"* and the platform's local stack already runs object storage for
+  "evidence uploads." That is staff photographing vehicle condition, not customers
+  uploading pictures of their car, and it does not breach the rule above.
+
+  It does need its own treatment before it ships, because it is the most sensitive data in
+  the system: dated images of a named resident's vehicle, at a known address, tied to a
+  timestamped custody chain. Required decisions — **who captures, who can view, how long
+  it is retained, whether it inherits the valet phone-number restriction, and what
+  "sealed" means technically** (hashing, write-once, tamper-evidence). Treat "sealed" as a
+  product claim that has to be defensible if it is ever produced in a dispute.
 - **Cross-location isolation.** A manager at River North must not read State Street
   customers. A customer record belongs to exactly one location — *"location-specific
   customer databases."* Test explicitly.

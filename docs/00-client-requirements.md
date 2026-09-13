@@ -254,6 +254,24 @@ rather than implementations — see doc 14.
 
 ---
 
+## 7a. Identity Guidelines, Edition 1.1 — received
+
+A complete identity system now exists and **supersedes everything previously inferred from
+the prototype**. Four things in it change the build:
+
+| | |
+|---|---|
+| **The product is Pioneer Passport** | Not "Pioneer Connect." Always two words — *"never 'Passport by Pioneer' or 'the Pioneer app'"* |
+| **A four-product family** | Passport (residents, blue) · Crew (valets, amber) · Console (managers, navy) · Record (custody, teal). Today valets and managers use Passport through their own roles; the others are named for when they split. **Crew, Console and Record are proposals pending trademark clearance** |
+| **A real palette and type system** | Pioneer Red `#FD2F38`, Pioneer Navy `#0B2C5D`, Signal Blue `#0048A8`; Overpass, Overpass Mono, Source Sans 3, Source Serif 4. Retires the palette sampled from the prototype — see [10 — Design System](10-design-system.md) |
+| **The valet screens hold 7:1** | A higher contrast bar than the rest of the product, WCAG 2.2 AA elsewhere. Correct, for a tablet read at arm's length in a garage |
+
+It also confirms two things this documentation had only proposed: **Lucide** icons at 24px
+and 1.75 stroke, always paired with a word; and that brand values belong in a token layer,
+which is what makes the licensing architecture work.
+
+---
+
 ## 8. Risks carried forward from the brief
 
 Reproduced because they are the client-facing framing, and Tuesday's proposal must

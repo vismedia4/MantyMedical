@@ -1,135 +1,190 @@
 # 10 — Design System
 
-> Requirements authority is [00 — Client Requirements](00-client-requirements.md).
-> **Note on branding:** the product is designed for licensing to other parking operators,
-> so *"company structure, product name and branding must stay flexible."* Everything
-> below is **Pioneer's theme, not the system's identity.** Ship it as a token set bound
-> to `Tenant.theme`, never hard-coded. See doc 03.
+> **Superseded by the Pioneer Parking Identity, Edition 1.1.** The palette and typefaces
+> below are now taken from that document, not sampled from the prototype. The earlier
+> prototype values (`#B13832` red, `#1B1F31` navy, Poppins / IBM Plex) are **retired** —
+> do not use them anywhere.
+>
+> Machine-readable tokens: [`design-tokens.css`](design-tokens.css).
 
-All hex values were **sampled directly from the prototype screenshots** at full
-resolution. They are exact, not approximations, unless marked.
+## The rule that governs everything else
 
-Machine-readable version: [`design-tokens.css`](design-tokens.css) — drop it in and
-consume the custom properties directly.
+> *"Each color has one job. Red is rare, which is why it is noticed."*
+
+Three usage rules from Edition 1.1 are non-negotiable and are the ones most likely to be
+broken by accident:
+
+1. **Text is never in Pioneer Red.** Red is 3.7:1 on white — the mark and display type at
+   24px and up, nothing else.
+2. **Signal Blue is the only actionable colour on screens.** Every button and link a person
+   acts on. One blue button per view.
+3. **The valet screens hold 7:1**, not 4.5:1. A higher bar than the rest of the product,
+   for a tablet read at arm's length in a garage.
 
 ---
 
-## Colour
+## Colour — Edition 1.1
 
-### Brand
+### Primary
 
-| Token | Hex | Where observed |
-|---|---|---|
-| `--brand-red` | `#B13832` | Primary buttons (Sign In, Accept, Submit change), active toggle fill, sidebar active text, column header "INCOMING" |
-| `--brand-red-bright` | `#CA3A31` | Card left rail (active), Reject text, link red |
-| `--brand-red-logo` | `#E94643` | The "P" logo mark only |
-| `--brand-navy` | `#1B1F31` | Headings, customer names, KPI numerals, wordmark "Pioneer" |
+| Token | Name | Hex | RGB | Job |
+|---|---|---|---|---|
+| `--red` | **Pioneer Red** | `#FD2F38` | 253 47 56 | The mark and brand accents. **Never body text** — 3.7:1 on white |
+| `--navy` | **Pioneer Navy** | `#0B2C5D` | 11 44 93 | The logo's words, headings, sign panels, uniforms. 13.7:1 with white |
+| `--blue` | **Signal Blue** | `#0048A8` | 0 72 168 | **Screens only.** Every button and link people act on. 8.4:1 with white |
 
-Three reds is one too many for a production system. Recommendation *(proposed)*:
-keep `#B13832` as the single interactive red and `#E94643` for the logo mark;
-retire `#CA3A31` or fold it into the bright ramp.
-
-### Semantic
-
-| Token | Hex | Meaning |
-|---|---|---|
-| `--success` | `#3B7E44` | **Ready** button, Approve text, `active` pill text |
-| `--success-rail` | `#498955` | Completed card left rail |
-| `--warning` | `#A75823` | `pending` pill text, `Accepted` badge, approvals callout, prototype banner text |
-| `--danger` | `#B13832` | Same as brand red — destructive and primary share a colour |
-
-> **`--danger` and `--brand-red` being identical is a real risk.** "Submit change" and
-> "Suspend" render in the same red. Recommendation *(proposed)*: keep primary at
-> `#B13832` and shift destructive to a distinctly darker red, or reserve filled-red for
-> primary and outline-red for destructive. Decide before component work starts.
+CMYK starting points: Red `0 81 78 1` · Navy `88 53 0 64` · Blue `100 57 0 34`.
+Pantone references are matched on press and recorded in the guidelines once proofed.
 
 ### Neutrals
 
-| Token | Hex | Use |
-|---|---|---|
-| `--ink` | `#1B1F31` | Primary text |
-| `--ink-muted` | `#5C6376` | Body, labels, secondary text, sidebar idle, table headers |
-| `--surface` | `#FFFFFF` | Cards, sidebar, modals, header |
-| `--bg` | `#F2F2F2` | Page background, dividers |
-| `--border` | `#E2E3E7` | Input and card borders *(approx.)* |
-| `--border-subtle` | `#EBECEF` | Hairline rules *(approx.)* |
-
-### Tinted fills
-
-Every status colour has a pale companion used as a background.
-
-| Token | Hex | Paired text | Where |
+| Token | Name | Hex | Job |
 |---|---|---|---|
-| `--red-tint` | `#F2DFDF` | `#B13832` | Sidebar active pill |
-| `--red-tint-soft` | `#F6EAE9` | `#B13832` | `IMMEDIATE` badge |
-| `--red-tint-bg` | `#EEE8E8` | — | Incoming column background |
-| `--red-tint-banner` | `#EDE6E6` | `#B13832` | Alert banner |
-| `--red-tint-btn` | `#F1E3E5` | `#CA3A31` | Reject button |
-| `--green-tint` | `#D8E5DE` | `#3B7E44` | Approve button |
-| `--green-tint-pill` | `#CADACE` | `#3B7E44` | `active` pill |
-| `--amber-tint` | `#F6DED0` | `#A75823` | `Accepted` badge |
-| `--amber-tint-pill` | `#E2D2C5` | `#A75823` | `pending` pill |
-| `--neutral-tint` | `#E7E9EE` | `#5C6376` | `FUTURE` badge |
-| `--proto-banner` | `#EAE2DC` | `#A75823` | "PROTOTYPE — NOT PRODUCTION" bar — **remove in production** |
+| `--ink` | Asphalt | `#1A1F33` | Text |
+| `--muted` | Concrete | `#5A6478` | Secondary text |
+| `--line` | Line | `#E2E4E8` | Dividers |
+| `--ground` | Paper | `#F2F4F8` | Ground |
 
-### Two prototype artefacts to strip
+### Lane colours — one per product
 
-1. **The `PROTOTYPE — NOT PRODUCTION` banner** and the `Viewing as` role switcher.
-2. **The red chat bubble** in the bottom-right of every screenshot — the prototype's
-   comment-and-screenshot widget. Client direction: *"reposition it as an internal
-   bug-reporting tool, not a general customer feedback channel."* It must not appear in
-   any customer-facing build; keep it in internal and staging builds only, behind a flag.
+| Product | Colour | Hex | Audience |
+|---|---|---|---|
+| **Passport** | Signal Blue | `#0048A8` | Residents — *built, in pilot* |
+| **Crew** | Curb Amber | `#F2A900` | Valets and attendants — *proposed name* |
+| **Console** | Pioneer Navy | `#0B2C5D` | Managers and the office — *proposed name* |
+| **Record** | Ledger Teal | `#0E7C7B` | Verified Custody Record™ — *full pilot* |
 
-### Accessibility check
+**Lane colours appear on the app icon, the launch screen and marketing only.** Inside the
+apps, everything uses the shared interface colours. Do not tint a screen by role.
 
-`#5C6376` on `#FFFFFF` ≈ **6.2:1** — passes AA for body text.
-`#FFFFFF` on `#B13832` ≈ **6.6:1** — passes AA.
-`#FFFFFF` on `#3B7E44` ≈ **5.3:1** — passes AA for normal text.
-`#3B7E44` on `#CADACE` ≈ **3.6:1** — **fails AA for body text**; acceptable only at
-pill sizes ≥ 14px semibold (AA large). Verify each tint pair against its real type size
-during component build; the tint/text pairs are the weakest link in this palette.
+### Signals — screens and signs only
 
-Status is never communicated by colour alone anywhere in the prototype — every pill and
-badge carries a word. Hold that line.
+| Token | Hex | Meaning |
+|---|---|---|
+| `--ready` | `#15803D` | Done |
+| `--alert` | `#D91E36` | Waiting |
+| `--caution` | `#8A4B00` | Caution — **text** |
+| `--error` | `#C0271E` | Error — **text** |
 
-### Dark mode
+Note the split: `#D91E36` is the alert *fill*; `#8A4B00` and `#C0271E` are the text-safe
+equivalents. Using the fill colour as text is the easy mistake.
 
-Not present in the prototype. If required, note that the valet board's red/green
-semantics carry operational meaning and must retain their contrast relationships.
-Recommendation *(proposed)*: defer dark mode; the tablet lives under garage lighting
-where a bright board is an asset.
+### Proportion
+
+```
+White and Paper  ████████████████████████████  58
+Pioneer Navy     █████████████                 26
+Signal Blue      ████                           8
+Pioneer Red      ███                            6
+```
+
+Lane colours and signals share the last sliver. If a screen looks more red than this, it
+is wrong.
+
+### Contrast pairs — verified in the guidelines
+
+| Pair | Ratio | Use |
+|---|---|---|
+| White on navy | **13.7:1** | Anything, any size. Signs and reversed panels |
+| Navy on white | **13.7:1** | Headings and the logo's words |
+| White on blue | **8.4:1** | Buttons — including the valet screen's 7:1 standard |
+| Navy on amber | **6.8:1** | Crew materials. **Never white on amber** (2.0:1) |
+| White on teal | **5.0:1** | Record materials; large text on screens |
+| Red on white | **3.7:1** | Logo and display type 24px and up **only** |
 
 ---
 
-## Typography
+## Typography — Edition 1.1
 
-The prototype's typefaces cannot be identified with certainty from raster images.
-Observed characteristics and a recommended stack:
+> *"Road-sign lettering for the name and the numbers, a clear sans for reading, a serif for
+> letters."*
 
-| Role | Observed | Recommended *(proposed)* |
+| Role | Face | Weights | Notes |
+|---|---|---|---|
+| **Display and wayfinding** | **Overpass** | 700 · 800 · 900 | Drawn from Highway Gothic, the lettering on American road and garage signs. Headings, the logo, signage, level markers. Capitals +0.04em, labels +0.16em |
+| **Figures and codes** | **Overpass Mono** | 400 · 600 | Ticket numbers, plates, stalls, times — even width so they line up |
+| **Reading and interface** | **Source Sans 3** | 400 · 600 · 700 · italic | Body, the apps, forms, captions. Legible at 13px on a phone in a dim garage |
+| **Correspondence** | **Source Serif 4** | 400 · 600 · italic | Letters, proposals, long reports — where Pioneer speaks to owners and boards |
+
+All four are **SIL Open Font License** — free for print, web and apps, and bundled with the
+apps so they render offline.
+
+**Fallbacks** where the brand fonts cannot be installed: Arial for Overpass and Source
+Sans, Georgia for Source Serif.
+
+### Scale — screens
+
+| Role | Size / weight | Example |
 |---|---|---|
-| Headings / wordmark | Geometric sans, tight tracking, heavy weight at large sizes | **Poppins** or **Outfit**, 600–700 |
+| Display | 56 / 900 | *Every car* |
+| Heading | 32 / 800 | *Your vehicles* |
+| Title | 20 / 700 | *Request history* |
+| Body | 17 / 400 | *Ready at the front desk.* |
+| Label | 12 / 800, +.16em | `BY LOCATION` |
 
-| UI / body | Neutral grotesque, high x-height | **Inter**, 400–600 |
-| Codes & identifiers | Monospace, letter-spaced — `481027`, `@wacker-valet` | **JetBrains Mono** or `ui-monospace` |
+### Rules
 
-### Scale *(measured from the screenshots, rounded to a 4px-friendly ramp)*
+- Overpass capitals carry names and wayfinding. **Never set paragraphs in capitals.**
+- **Buttons are 19px bold or larger**, which counts as large text for accessibility.
 
-| Token | Size / weight | Use |
-|---|---|---|
-| `display` | 32px / 700 | Landing wordmark |
-| `h1` | 24px / 700 | Page titles — "Manager Dashboard", "Office Console" |
-| `h2` | 20px / 700 | Section headings — "My vehicles", "Your request" |
-| `h3` | 17px / 600 | Card titles, customer names |
-| `body` | 15px / 400 | Default |
-| `body-sm` | 13px / 400 | Secondary lines, metadata |
-| `label` | 12px / 600, `letter-spacing: .06em`, **uppercase** | Section labels — `ACTIVE REQUESTS`, `BY LOCATION`, `PARKING LOCATION · STAFF ONLY` |
-| `caption` | 12px / 400 | Helper text under toggles |
-| `numeral` | 30px / 700 | KPI values |
+---
 
-The **uppercase tracked micro-label** is the most distinctive typographic device in the
-system. It marks every section boundary on every screen. Build it as one component and
-use it everywhere.
+## Graphic language
+
+Three devices, taken from the mark and the garage. **Use one at a time.**
+
+| Device | Spec |
+|---|---|
+| **The 3-in-5 hatch** | Bay-line stripes at the flag's **31°**, stripe-to-gap ratio **3 : 5**. Card backs, sign bands, report covers, clearance bars |
+| **Level markers** | A navy square, Overpass Black numerals, the red flag. Garage levels first; also chapters, report sections, app onboarding steps |
+| **Icons** | **Lucide** outline, 24px grid, **1.75 stroke**, round joins, navy or the current text colour. **Always paired with a word** |
+
+The icon spec confirms what this document previously only proposed — Lucide, always
+labelled. No change needed to the screen specs.
+
+---
+
+## Product naming
+
+> *"Always two words: **Pioneer Passport**, never 'Passport by Pioneer' or 'the Pioneer app'."*
+
+- Product lockups: small `PIONEER` tracked above the product name, both navy, beside the red
+  mark. The name sits on the line of the mark's bowl.
+- App icons: the white mark on the lane colour; navy on Crew's amber.
+- **One app store developer account in Pioneer's name publishes the whole family.**
+- Today valets and managers use **Passport** through their own roles. Crew and Console are
+  ready for when those become separate apps — see [05 — Information Architecture](05-information-architecture.md).
+- **Crew, Console and Record are proposals** pending trademark clearance in Illinois and
+  federally before first use.
+
+---
+
+## Digital
+
+| Item | Spec |
+|---|---|
+| Grid | 12 columns, 24px gutters, 1200px maximum |
+| Header | The corporate lockup, 34–40px tall, 1× clear space |
+| Buttons | **One blue button per view.** Links are navy, underlined |
+| Focus | 3px blue ring |
+| Accessibility | **WCAG 2.2 AA** across the site; **the valet screens hold 7:1** |
+| Email signature | Text, not an image. The mark is the only graphic |
+| Favicon / avatar | White mark on red — the one place red fills a whole shape on screen |
+
+---
+
+## Retired — the prototype palette
+
+The values previously sampled from the Pioneer Connect prototype (`#B13832`, `#CA3A31`,
+`#E94643`, `#1B1F31`, `#3B7E44`, `#A75823`) are **superseded by Edition 1.1** and must not
+be used. The reference screenshots under [`screens/`](screens/) still show them; read those
+for layout and behaviour, never for colour.
+
+Two open items the prototype palette raised are resolved by Edition 1.1:
+
+- **Three reds** → one. `#FD2F38` is the mark; there is no second or third red.
+- **Danger and primary sharing a colour** → they no longer do. Primary action is Signal
+  Blue, alert is `#D91E36`, and destructive text takes `#C0271E`.
 
 ---
 

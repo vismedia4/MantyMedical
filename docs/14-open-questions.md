@@ -118,7 +118,14 @@ customer can cancel in the seconds before a valet taps Accept.
 **Recommendation:** it disappears from the active board and appears in history. If a valet
 had already started walking, the board must say why the card vanished.
 
-### Q12. Where does the bug-reporting widget live?
+### Q12. Trademark clearance on Crew, Console and Record
+Identity 1.1 states the three names are proposals and asks for clearance *"in Illinois and
+federally before first use."* Passport is already in the codebase, so it is the one
+carrying live exposure.
+**Recommendation:** clear Passport first and immediately; Crew, Console and Record before
+either is used in a store listing or on any customer-facing surface.
+
+### Q13. Where does the bug-reporting widget live?
 > *"Reposition it as an internal bug-reporting tool, not a general customer feedback
 > channel. Clarify intent and adjust its presentation."*
 
@@ -195,6 +202,8 @@ day one — they are — and defer the reporting surface entirely.
 | Can a manager create customer records directly? | **Yes** — manager-supported provisioning |
 | Do managers need to be on site? | **No** — remote operation is an explicit requirement |
 | Is SMS a channel? | **No** — in-app push only |
+| What is the object store for "evidence uploads"? | **Verified Custody Record** — condition at intake and return, the fourth product in the family. Staff-captured, not customer uploads. Scope it on its own terms: doc 13 §4 |
+| Is "Pioneer Connect" the product name? | **No** — the product is **Pioneer Passport**. Crew, Console and Record are proposed sibling names pending trademark clearance |
 
 ---
 

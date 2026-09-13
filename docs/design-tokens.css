@@ -1,81 +1,89 @@
 /*
- * Pioneer Connect — design tokens
- * Colour values sampled directly from the prototype screenshots at full resolution.
- * See docs/10-design-system.md for provenance, contrast notes, and open decisions.
+ * Pioneer Parking — design tokens
+ * Source: Pioneer Parking Identity Guidelines, Edition 1.1.
+ * Supersedes the values previously sampled from the Pioneer Connect prototype.
+ * See docs/10-design-system.md for usage rules and contrast pairs.
  */
 
 :root {
-  /* ── Brand ─────────────────────────────────────────────── */
-  --pc-brand-red:          #B13832;  /* primary actions, active states */
-  --pc-brand-red-bright:   #CA3A31;  /* card rails, reject text, links */
-  --pc-brand-red-logo:     #E94643;  /* logo mark only */
-  --pc-brand-navy:         #1B1F31;  /* headings, wordmark "Pioneer" */
-
-  /* ── Semantic ──────────────────────────────────────────── */
-  --pc-success:            #3B7E44;  /* Ready, Approve, active pill */
-  --pc-success-rail:       #498955;  /* completed card left rail */
-  --pc-warning:            #A75823;  /* pending, Accepted, approvals callout */
-  --pc-danger:             #B13832;  /* NOTE: identical to brand red — see doc 10 */
+  /* ── Primary ───────────────────────────────────────────────
+     Each colour has one job. Red is rare, which is why it is noticed. */
+  --pc-red:        #FD2F38;  /* Pioneer Red   — mark and display 24px+. NEVER body text (3.7:1) */
+  --pc-navy:       #0B2C5D;  /* Pioneer Navy  — logo words, headings, sign panels (13.7:1 on white) */
+  --pc-blue:       #0048A8;  /* Signal Blue   — SCREENS ONLY. Every button and link (8.4:1 on white) */
 
   /* ── Neutrals ──────────────────────────────────────────── */
-  --pc-ink:                #1B1F31;
-  --pc-ink-muted:          #5C6376;
-  --pc-surface:            #FFFFFF;
-  --pc-bg:                 #F2F2F2;
-  --pc-border:             #E2E3E7;
-  --pc-border-subtle:      #EBECEF;
+  --pc-asphalt:    #1A1F33;  /* text */
+  --pc-concrete:   #5A6478;  /* secondary text */
+  --pc-line:       #E2E4E8;  /* dividers */
+  --pc-paper:      #F2F4F8;  /* ground */
+  --pc-white:      #FFFFFF;
 
-  /* ── Tinted fills (pair each with its stated text colour) ─ */
-  --pc-red-tint:           #F2DFDF;  /* on: --pc-brand-red        sidebar active pill */
-  --pc-red-tint-soft:      #F6EAE9;  /* on: --pc-brand-red        IMMEDIATE badge */
-  --pc-red-tint-bg:        #EEE8E8;  /*                           incoming column */
-  --pc-red-tint-banner:    #EDE6E6;  /* on: --pc-brand-red        alert banner */
-  --pc-red-tint-btn:       #F1E3E5;  /* on: --pc-brand-red-bright Reject button */
-  --pc-green-tint:         #D8E5DE;  /* on: --pc-success          Approve button */
-  --pc-green-tint-pill:    #CADACE;  /* on: --pc-success          active pill */
-  --pc-amber-tint:         #F6DED0;  /* on: --pc-warning          Accepted badge */
-  --pc-amber-tint-pill:    #E2D2C5;  /* on: --pc-warning          pending pill */
-  --pc-neutral-tint:       #E7E9EE;  /* on: --pc-ink-muted        FUTURE badge */
+  /* ── Lane colours — one per product ────────────────────────
+     Icon, launch screen and marketing only. Never inside the app UI. */
+  --pc-lane-passport: #0048A8;  /* Signal Blue  · residents        */
+  --pc-lane-crew:     #F2A900;  /* Curb Amber   · valets           */
+  --pc-lane-console:  #0B2C5D;  /* Pioneer Navy · managers, office */
+  --pc-lane-record:   #0E7C7B;  /* Ledger Teal  · custody record   */
 
-  /* ── Radius ────────────────────────────────────────────── */
-  --pc-radius-sm:    6px;   /* badges, pills, inputs */
-  --pc-radius-md:   10px;   /* buttons, cards */
-  --pc-radius-lg:   14px;   /* modals, outer containers */
-  --pc-radius-full: 999px;  /* toggles, avatars, status pills */
+  /* ── Signals — screens and signs only ──────────────────── */
+  --pc-ready:      #15803D;  /* done    */
+  --pc-alert:      #D91E36;  /* waiting — fill */
+  --pc-caution:    #8A4B00;  /* caution — TEXT-safe */
+  --pc-error:      #C0271E;  /* error   — TEXT-safe */
 
-  /* ── Space (4px base) ──────────────────────────────────── */
-  --pc-space-1:  4px;
-  --pc-space-2:  8px;
-  --pc-space-3: 12px;
-  --pc-space-4: 16px;
-  --pc-space-5: 20px;
-  --pc-space-6: 24px;
-  --pc-space-8: 32px;
+  /* ── Type ──────────────────────────────────────────────────
+     All four families are SIL Open Font License; bundle them so
+     the apps render offline. Fallbacks are for Office machines. */
+  --pc-font-display: "Overpass", "Arial Narrow", Arial, sans-serif;       /* Highway Gothic lineage */
+  --pc-font-mono:    "Overpass Mono", ui-monospace, Menlo, monospace;     /* codes, plates, stalls, times */
+  --pc-font-body:    "Source Sans 3", "Segoe UI", Arial, sans-serif;      /* reading and interface */
+  --pc-font-serif:   "Source Serif 4", Georgia, "Times New Roman", serif; /* correspondence */
 
-  /* ── Type ──────────────────────────────────────────────── */
-  --pc-font-heading: "Poppins", "Outfit", system-ui, sans-serif;   /* proposed */
-  --pc-font-body:    "Inter", system-ui, -apple-system, sans-serif;
-  --pc-font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  /* Scale · screens */
+  --pc-text-display: 900 56px/1.02 var(--pc-font-display);
+  --pc-text-heading: 800 32px/1.1  var(--pc-font-display);
+  --pc-text-title:   700 20px/1.25 var(--pc-font-display);
+  --pc-text-body:    400 17px/1.55 var(--pc-font-body);
 
-  --pc-text-display: 700 32px/1.15 var(--pc-font-heading);
-  --pc-text-h1:      700 24px/1.25 var(--pc-font-heading);
-  --pc-text-h2:      700 20px/1.3  var(--pc-font-heading);
-  --pc-text-h3:      600 17px/1.35 var(--pc-font-body);
-  --pc-text-body:    400 15px/1.5  var(--pc-font-body);
-  --pc-text-body-sm: 400 13px/1.45 var(--pc-font-body);
-  --pc-text-caption: 400 12px/1.4  var(--pc-font-body);
-  --pc-text-numeral: 700 30px/1.1  var(--pc-font-heading);
+  /* Label: 12px / 800, uppercase, +.16em. Overpass capitals carry names
+     and wayfinding — never set paragraphs in capitals. */
+  --pc-label-size:      12px;
+  --pc-label-weight:    800;
+  --pc-label-tracking:  0.16em;
+  --pc-caps-tracking:   0.04em;
 
-  /* Signature device: uppercase tracked micro-label.
-     Used for every section boundary on every screen. */
-  --pc-label-size:       12px;
-  --pc-label-weight:     600;
-  --pc-label-tracking:   0.06em;
-  --pc-label-transform:  uppercase;
+  /* Buttons are 19px bold or larger — this is what makes them count
+     as large text for accessibility. */
+  --pc-button-min-size: 19px;
 
-  /* ── Controls ──────────────────────────────────────────── */
-  --pc-control-height:        44px;
-  --pc-control-height-lg:     52px;  /* full-width primary */
-  --pc-control-height-tablet: 56px;  /* valet board — proposed */
-  --pc-card-rail-width:        4px;  /* queue card left rail */
+  /* ── Graphic language ──────────────────────────────────────
+     Three devices; use one at a time. */
+  --pc-flag-angle:      31deg;  /* the mark's flag; the hatch follows it */
+  --pc-hatch-stripe:    3;      /* stripe : gap = 3 : 5 */
+  --pc-hatch-gap:       5;
+  --pc-icon-stroke:     1.75;   /* Lucide outline, 24px grid, round joins */
+  --pc-icon-grid:       24px;
+
+  /* ── Digital ───────────────────────────────────────────── */
+  --pc-grid-columns:    12;
+  --pc-grid-gutter:     24px;
+  --pc-grid-max:        1200px;
+  --pc-focus-ring:      3px solid var(--pc-blue);
 }
+
+/*
+ * CONTRAST — verified pairs from Edition 1.1
+ *
+ *   White on navy    13.7:1   anything, any size
+ *   Navy on white    13.7:1   headings and the logo's words
+ *   White on blue     8.4:1   buttons, incl. the valet screen's 7:1 standard
+ *   Navy on amber     6.8:1   crew materials — NEVER white on amber (2.0:1)
+ *   White on teal     5.0:1   record materials; large text on screens
+ *   Red on white      3.7:1   logo and display type 24px and up ONLY
+ *
+ * WCAG 2.2 AA across the product. The valet screens hold 7:1.
+ *
+ * PROPORTION on a typical page or screen:
+ *   White and Paper 58 · Navy 26 · Blue 8 · Red 6
+ */
