@@ -60,7 +60,8 @@ with the product owner before sprint 1.
 | 13 | [Non-Functional Requirements](13-nonfunctional-requirements.md) | Security, privacy, retention, a11y |
 | 14 | [Open Questions](14-open-questions.md) | Decisions blocking or shaping the build |
 | 15 | [Delivery Plan](15-delivery-plan.md) | Phased scope, milestones, sizing, risk register |
-| **18** | **[Cost & Effort Model](18-cost-model.md)** | **Bottom-up MVP estimate for the Sept 15 decision** |
+| **18** | **[Cost & Effort Model](18-cost-model.md)** | **Effort, benchmark and pricing for the Sept 15 decision** |
+| **19** | **[Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md)** | **What each purchase includes, excludes, and when it lands** |
 | 16 | [Website Refresh](16-website-refresh.md) | Workstream 2 — positioning, content, stack |
 | 17 | [Roadmap Beyond MVP](17-roadmap-beyond-mvp.md) | Workstream 3 — transient ticketing, deferred items |
 
@@ -112,7 +113,8 @@ locations, staff accounts, six-digit enrollment codes, and system-wide policy.
 ## Next decision point
 
 **Tuesday, September 15, 12:00 noon** — VisMedAI presents MVP scope, timeline and cost,
-plus website direction. [15 — Delivery Plan](15-delivery-plan.md),
-[18 — Cost & Effort Model](18-cost-model.md) and
+plus website direction. [19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md) is the
+client-facing answer to all three; [18 — Cost & Effort Model](18-cost-model.md),
+[15 — Delivery Plan](15-delivery-plan.md) and
 [16 — Website Refresh](16-website-refresh.md) feed that meeting;
 [14 — Open Questions](14-open-questions.md) Q1 and Q2 must be closed in it.

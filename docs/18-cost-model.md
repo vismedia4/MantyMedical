@@ -11,24 +11,65 @@
 
 ## 1. Headline
 
-| | Person-days | Elapsed, team of 4–5 |
+Two figures matter, and they measure different worlds.
+
+| | Conventional delivery | **AI-augmented delivery** |
 |---|---|---|
-| **Pilot** — Phases 0 + 1, core loop live in one garage | **160 – 210** (plan ~185) | **~10 weeks** |
-| **Full MVP** — Phases 0 – 5, both app stores, all locations | **445 – 580** (plan ~505) | **~5 months** |
+| **Pilot** — core loop live in one garage | ~185 person-days · ~$60,000 | **~72 days · $26,000 – $28,000 · 7 weeks** |
+| **Full MVP** — both stores, all locations | ~505 person-days · **$150,000 – $200,000** | **~155 days · $55,000 – $60,000 · 18 weeks** |
 
-Store review adds 2–4 weeks of elapsed time at the end and is outside our control. It
-overlaps Phase 5 but cannot be compressed.
+Scope boundaries and week-by-week timelines are in
+[19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md).
 
-### Illustrative price at three blended day rates
+### Why both numbers belong in the proposal
 
-Rates are placeholders for VisMedAI to replace. A blended rate spans design, engineering,
-QA and delivery management.
+The bottom-up model in §3 below produces **505 person-days** for the full MVP. At a
+conventional blended rate of $300–400/day that is **$151,000–$202,000** — which
+independently corroborates the client-side estimate of what this build would have cost
+before AI tooling. Two methods, one answer.
 
-| Blended day rate | Pilot (~185 d) | Full MVP (~505 d) |
-|---|---:|---:|
-| $700 | ~$130,000 | ~$355,000 |
-| $1,000 | ~$185,000 | ~$505,000 |
-| $1,300 | ~$240,000 | ~$655,000 |
+That makes the delivered price a *quantified* discount rather than a cheap quote:
+
+```
+Conventional delivery, bottom-up:        $150,000 – $200,000
+AI-augmented, pilot (Phases 0–1):        $ 26,000 – $ 28,000
+AI-augmented, full MVP (Phases 0–5):     $ 55,000 – $ 60,000
+```
+
+**Lead with the benchmark.** Quote $27,000 alone and Jonathan values the asset at
+$27,000 — which matters more than usual here, because licensing is the ROI (§2) and his
+mental model of what he owns is set the day a price is named. Stated against the
+benchmark, the same money buys $175,000 of asset at roughly 15 cents on the dollar. That
+is also the honest description of what is happening.
+
+### What compresses, and what does not
+
+The discount is not uniform, and pricing as though it were is how a fixed price bleeds.
+
+| Compresses hard | Resists compression |
+|---|---|
+| Screen implementation from a written spec | Tablet reliability matrix on real hardware |
+| CRUD admin surfaces, forms, tables | The pilot itself — a real shift, in a real garage |
+| Migrations, boilerplate, test scaffolding | App store review — calendar, not effort |
+| Documentation and specification synthesis | Penetration test and legal counsel |
+| | Vehicle image asset set — ~150 assets of design labour |
+| | Client decision latency |
+
+Phase 4 — locations, users, activity archive, settings — is 75 conventional days of
+tables and forms and compresses hardest of anything in the plan. Phase 5 compresses
+least, because most of it is other people's calendars.
+
+### Two conditions the price depends on
+
+1. **A client-supplied specification exists**, produced by a previous provider, and it
+   carries forward. Discovery is not being repaid.
+2. **The codebase is not greenfield** — the app, brand system, screens and Docker backend
+   already exist. Phase 0 is a gap-fill, not a build.
+
+If either fails, the compression assumption fails with it. Both belong in the contract
+as stated assumptions, alongside a change-control clause naming what triggers a revision.
+A fixed price written against someone else's specification absorbs every gap in that
+document at your margin.
 
 ---
 
@@ -176,11 +217,13 @@ listed to be argued against.
 
 ### The recommendation in one line
 
-**Fund the pilot, not the programme.** Commit ~185 days to Phases 0 + 1, take the measured
-result at the gate — requests completed without a phone call, request-to-ready time, push
-delivery rate, board uptime — and let the remaining ~320 days be a decision made on evidence
-rather than on a specification. It matches the sequencing thesis Jonathan already set, and it
-puts the reliability question that justifies the whole project first rather than last.
+**Fund the pilot, not the programme.** Seven weeks and $26–28K buys a measured answer to
+the only question that matters — requests completed without a phone call, request-to-ready
+time, push delivery rate, board uptime. The remaining ~$30K is then a decision made on
+evidence rather than on a specification, and if the gate answer is no, the exposure was
+seven weeks rather than eighteen. It matches the sequencing thesis Jonathan already set,
+and it puts the reliability question that justifies the whole project first rather than
+last.
 
 ---
 

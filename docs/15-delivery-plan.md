@@ -4,9 +4,10 @@
 > VisMedAI presents MVP scope, timeline and cost. Requirements authority is
 > [00 — Client Requirements](00-client-requirements.md).
 
-Sizes below are relative (S/M/L). **Costed effort is in
-[18 — Cost & Effort Model](18-cost-model.md)** — ~185 person-days to the Phase 1 pilot gate,
-~505 for the full MVP, with the recommendation to fund the pilot rather than the programme.
+Sizes below are relative (S/M/L), and the phase structure here is the *engineering* plan.
+The **client-facing** version — what the pilot and the full MVP each include, exclude, and
+when they land — is [19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md). Costed effort
+is in [18 — Cost & Effort Model](18-cost-model.md).
 
 ## Sequencing principle
 
