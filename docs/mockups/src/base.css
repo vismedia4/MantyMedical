@@ -1,0 +1,13 @@
+:root{
+  --red:#FD2F38; --navy:#0B2C5D; --blue:#0048A8;
+  --asphalt:#1A1F33; --concrete:#5A6478; --line:#E2E4E8; --paper:#F2F4F8; --white:#fff;
+  --amber:#F2A900; --teal:#0E7C7B;
+  --ready:#15803D; --alert:#D91E36; --caution:#8A4B00;
+  --disp:"Overpass","Arial Narrow",Arial,sans-serif;
+  --mono:"Overpass Mono",ui-monospace,Menlo,monospace;
+  --body:"Source Sans 3","Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+body{font-family:var(--body);color:var(--asphalt);background:#fff}
+.lbl{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+.mono{font-family:var(--mono);font-variant-ligatures:none}

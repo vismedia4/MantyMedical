@@ -1,0 +1,11 @@
+html,body{background:transparent}
+.stage{width:470px;height:1000px;display:flex;align-items:center;justify-content:center}
+.device{width:430px;height:928px;background:#11151f;border-radius:56px;padding:14px;
+        box-shadow:0 28px 60px rgba(11,44,93,.22), 0 2px 0 rgba(255,255,255,.10) inset}
+.screen{width:402px;height:900px;background:var(--white);border-radius:44px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.status{height:52px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;flex:0 0 auto}
+.status .t{font-family:var(--body);font-weight:700;font-size:15px;letter-spacing:.01em}
+.status .icons{display:flex;gap:6px;align-items:center}
+.notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:124px;height:30px;background:#11151f;border-radius:16px;z-index:5}
+.home{position:absolute;bottom:9px;left:50%;transform:translateX(-50%);width:140px;height:5px;border-radius:3px;background:#11151f;opacity:.75}
+.pad{padding:0 22px}

@@ -1,0 +1,200 @@
+<!doctype html><meta charset="utf-8">
+<link rel="stylesheet" href="fonts.css"><link rel="stylesheet" href="base.css">
+<style>
+html,body{background:transparent}
+.stage{width:1500px;height:960px;display:flex;align-items:center;justify-content:center}
+.win{width:1440px;height:900px;background:#fff;border-radius:14px;overflow:hidden;
+     box-shadow:0 30px 70px rgba(11,44,93,.20);display:flex;flex-direction:column;border:1px solid var(--line)}
+.chrome{height:38px;background:#EDEFF3;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;gap:8px;flex:0 0 auto}
+.dot{width:11px;height:11px;border-radius:50%}
+.url{margin-left:14px;flex:1;height:24px;background:#fff;border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;padding:0 10px;gap:7px;max-width:420px}
+.url span{font-family:var(--body);font-size:11.5px;color:var(--concrete)}
+.body{flex:1;display:flex;min-height:0}
+
+/* sidebar */
+.side{width:228px;background:var(--navy);color:#fff;flex:0 0 auto;padding:20px 14px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:9px;padding:0 6px 20px}
+.wm{font-family:var(--disp);font-weight:900;font-size:16px;letter-spacing:-.01em}
+.wm span{color:#8FB3E8;font-weight:700}
+.navlbl{font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#7B96C4;padding:14px 8px 7px}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:#D6E1F2;font-family:var(--body);font-size:14.5px;font-weight:600}
+.nav.on{background:#fff;color:var(--navy);font-weight:700}
+.tenant{margin-top:auto;border-top:1px solid rgba(255,255,255,.16);padding-top:14px;display:flex;align-items:center;gap:10px}
+.tenant .av{width:32px;height:32px;border-radius:8px;background:#F2A900;display:grid;place-items:center;font-family:var(--disp);font-weight:900;font-size:13px;color:#3D2A00}
+.tenant .n{font-family:var(--disp);font-weight:800;font-size:13px}
+.tenant .s{font-size:11px;color:#8FB3E8;margin-top:1px}
+
+/* main */
+.main{flex:1;background:var(--paper);display:flex;flex-direction:column;min-width:0}
+.hdr{background:#fff;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:flex-start;justify-content:space-between;flex:0 0 auto}
+h1{font-family:var(--disp);font-weight:900;font-size:26px;color:var(--navy);letter-spacing:-.015em}
+.sub{font-size:13.5px;color:var(--concrete);margin-top:3px}
+.hdr .tools{display:flex;gap:9px;align-items:center}
+.search{width:230px;height:38px;border:1px solid var(--line);border-radius:9px;display:flex;align-items:center;gap:8px;padding:0 11px;background:#fff}
+.search span{font-size:13.5px;color:#98A0B0}
+.btn{height:38px;border-radius:9px;background:var(--blue);color:#fff;font-family:var(--disp);font-weight:800;font-size:14px;display:flex;align-items:center;gap:7px;padding:0 15px;letter-spacing:.01em}
+.btn.g{background:#fff;color:var(--navy);border:1px solid var(--line)}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:18px 28px 0;flex:0 0 auto}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+.kpi .k{font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--concrete)}
+.kpi .v{font-family:var(--disp);font-weight:900;font-size:30px;color:var(--asphalt);margin-top:7px;line-height:1;letter-spacing:-.02em}
+.kpi .d{font-size:12.5px;margin-top:7px;display:flex;align-items:center;gap:5px;color:var(--concrete)}
+.kpi .d.up{color:var(--ready);font-weight:600}
+.kpi .v.acc{color:var(--blue)}
+.kpi.flag{border-color:rgba(217,30,54,.35);background:#FFF7F8}
+.kpi.flag .v{color:#9B1220}
+
+.panel{margin:18px 28px 22px;background:#fff;border:1px solid var(--line);border-radius:12px;flex:1 1 auto;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.ptop{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--line)}
+.ptop .t{font-family:var(--disp);font-weight:800;font-size:16px;color:var(--navy)}
+.segs{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:3px}
+.seg{font-family:var(--disp);font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:6px 12px;border-radius:6px;color:var(--concrete)}
+.seg.on{background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+table{width:100%;border-collapse:collapse}
+th{font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--concrete);text-align:left;padding:11px 18px;border-bottom:1px solid var(--line);background:#FAFBFC}
+td{padding:13px 18px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.p{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--navy);letter-spacing:.05em}
+td.m{font-family:var(--mono);font-weight:600;font-size:14px;color:var(--asphalt);letter-spacing:.04em}
+.veh{color:var(--concrete);font-size:13px;margin-top:2px}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--disp);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.pill.due{background:#FBD9DC;color:#9B1220}
+.pill.mov{background:#DCE8FA;color:#003C8C}
+.pill.park{background:#E7F3EA;color:#14532D}
+.pill.sch{background:var(--paper);color:var(--concrete);border:1px solid var(--line)}
+.who{display:flex;align-items:center;gap:9px}
+.av{width:28px;height:28px;border-radius:7px;background:#E6EAF2;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:11px;color:var(--navy)}
+.link{color:var(--blue);font-family:var(--disp);font-weight:800;font-size:13px}
+.bar{height:6px;border-radius:3px;background:var(--line);width:84px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--blue)}
+</style>
+<div class="stage"><div class="win">
+  <div class="chrome">
+    <div class="dot" style="background:#FF5F57"></div><div class="dot" style="background:#FEBC2E"></div><div class="dot" style="background:#28C840"></div>
+    <div class="url">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <span>console.pioneerparking.com/floor</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="side">
+      <div class="brand">
+        <svg width="24" height="24" viewBox="0 0 32 32"><path d="M4 26 L14 4 h7 L11 26 Z" fill="#FD2F38"/><path d="M15.5 26 L25.5 4 h3 L18.5 26 Z" fill="#fff"/></svg>
+        <div class="wm">PIONEER <span>CONSOLE</span></div>
+      </div>
+      <div class="navlbl">Operations</div>
+      <div class="nav on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B2C5D" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></svg>Live floor</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3l2-5 3 10 3-7 2 2h5"/></svg>Retrieval queue</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M17 11h5M19.5 8.5v5"/></svg>Attendants</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Custody record</div>
+      <div class="navlbl">Business</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9M10 19V4M16 19v-7M22 19H2"/></svg>Reports</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>Payments</div>
+      <div class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D6E1F2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>Settings</div>
+      <div class="tenant">
+        <div class="av">PP</div>
+        <div><div class="n">Pioneer Parking</div><div class="s">Main Street Garage</div></div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="hdr">
+        <div><h1>Live floor</h1><div class="sub">Monday, 14 September · 9:41 AM · 3 attendants on shift</div></div>
+        <div class="tools">
+          <div class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#98A0B0" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><span>Plate, ticket or stall</span></div>
+          <div class="btn g"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B2C5D" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Export</div>
+          <div class="btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Check in a vehicle</div>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="k">Vehicles on floor</div><div class="v">41</div><div class="d">of 70 stalls · 59% occupied</div></div>
+        <div class="kpi"><div class="k">Average retrieval</div><div class="v acc">7:12</div><div class="d up"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg>2:48 faster than target</div></div>
+        <div class="kpi"><div class="k">Requests today</div><div class="v">128</div><div class="d">114 self-served in Passport</div></div>
+        <div class="kpi flag"><div class="k">Past target</div><div class="v">1</div><div class="d" style="color:#9B1220">Ticket 4471 · due in 2 min</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="ptop">
+          <div class="t">Retrieval queue</div>
+          <div class="segs"><div class="seg on">Active · 6</div><div class="seg">Scheduled · 4</div><div class="seg">Completed</div></div>
+        </div>
+        <table>
+          <tr><th style="width:132px">Ticket</th><th style="width:190px">Vehicle</th><th style="width:92px">Stall</th><th style="width:160px">Status</th><th style="width:190px">Attendant</th><th style="width:160px">Elapsed</th><th>Return to</th><th style="width:90px"></th></tr>
+          <tr>
+            <td class="m">TKT-4471</td>
+            <td><div class="p" style="font-size:14px">8KJH412</div><div class="veh">Silver Honda CR-V</div></td>
+            <td class="m">C-118</td>
+            <td><span class="pill due">Due in 2 min</span></td>
+            <td><div class="who"><div class="av">MD</div>Marcus D.</div></td>
+            <td><div class="bar"><i style="width:88%"></i></div></td>
+            <td>Main St. entrance</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4468</td>
+            <td><div class="p" style="font-size:14px">RTX2290</div><div class="veh">Black Toyota Highlander</div></td>
+            <td class="m">B-042</td>
+            <td><span class="pill mov">In motion</span></td>
+            <td><div class="who"><div class="av">MD</div>Marcus D.</div></td>
+            <td><div class="bar"><i style="width:52%"></i></div></td>
+            <td>Garden Ave.</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4463</td>
+            <td><div class="p" style="font-size:14px">9CVP038</div><div class="veh">Blue Subaru Outback</div></td>
+            <td class="m">D-201</td>
+            <td><span class="pill mov">In motion</span></td>
+            <td><div class="who"><div class="av">TR</div>Tanya R.</div></td>
+            <td><div class="bar"><i style="width:34%"></i></div></td>
+            <td>Main St. entrance</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4459</td>
+            <td><div class="p" style="font-size:14px">6LMS514</div><div class="veh">Grey Nissan Rogue</div></td>
+            <td class="m">A-014</td>
+            <td><span class="pill park">Ready at curb</span></td>
+            <td><div class="who"><div class="av">JP</div>Javier P.</div></td>
+            <td><div class="bar"><i style="width:100%;background:#15803D"></i></div></td>
+            <td>Main St. entrance</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4455</td>
+            <td><div class="p" style="font-size:14px">5WQD760</div><div class="veh">White Ford Escape</div></td>
+            <td class="m">A-007</td>
+            <td><span class="pill sch">Scheduled 3:15</span></td>
+            <td><div class="who"><div class="av" style="background:var(--paper);color:#98A0B0">—</div>Unassigned</div></td>
+            <td style="color:var(--concrete);font-size:13px">Starts in 5h 34m</td>
+            <td>Main St. entrance</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4452</td>
+            <td><div class="p" style="font-size:14px">2HDR847</div><div class="veh">Red Mazda CX-5</div></td>
+            <td class="m">B-119</td>
+            <td><span class="pill sch">Scheduled 4:00</span></td>
+            <td><div class="who"><div class="av" style="background:var(--paper);color:#98A0B0">&mdash;</div>Unassigned</div></td>
+            <td style="color:var(--concrete);font-size:13px">Starts in 6h 19m</td>
+            <td>Garden Ave.</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+          <tr>
+            <td class="m">TKT-4448</td>
+            <td><div class="p" style="font-size:14px">7BNK203</div><div class="veh">Green Jeep Cherokee</div></td>
+            <td class="m">D-055</td>
+            <td><span class="pill park">Ready at curb</span></td>
+            <td><div class="who"><div class="av">TR</div>Tanya R.</div></td>
+            <td><div class="bar"><i style="width:100%;background:#15803D"></i></div></td>
+            <td>Main St. entrance</td>
+            <td><span class="link">Open</span></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div></div>
