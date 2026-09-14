@@ -1,24 +1,18 @@
-<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="../fonts.css"><link rel="stylesheet" href="../deck.css"><div class="slide paper"><div class="rail"><i></i></div>
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="../fonts.css"><link rel="stylesheet" href="../deck.css"><div class="slide "><div class="rail"><i></i></div>
 <div class="pad">
-  <div class="kicker">Working today</div>
-  <h1 class="sm">The retrieval loop, end to&nbsp;end</h1>
-  <div style="display:flex;gap:60px;margin-top:44px;flex:1;min-height:0">
-    <div style="flex:0 0 330px;display:flex;flex-direction:column;align-items:center">
-      <div class="ph" style="width:330px"><img src="../img/02-passport-home-phone.webp"></div>
-    </div>
-    <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-      <ul class="tick">
-        <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0048A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div>A resident opens Passport and sees <b>their own vehicle</b>, by make, model and colour, with the decal masked.</div></li>
-        <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0048A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div>One tap requests it. The request lands on the valet station queue immediately.</div></li>
-        <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0048A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div>The stepper moves &mdash; <b>Pending &rarr; Retrieving vehicle &rarr; Ready for pickup</b> &mdash; with an honest estimate rather than a spinner.</div></li>
-        <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0048A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div>An attendant sees the name, the decal, the parking location and any internal note. <b>Never a phone number.</b></div></li>
-        <li><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0048A8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg><div>Every state change is written to an append-only log.</div></li>
-      </ul>
-      <div class="card acc" style="margin-top:44px">
-        <h3 style="font-size:24px">What the pilot is actually testing</h3>
-        <p style="font-size:20px">Whether a resident trusts the estimate enough to stop calling the
-        front desk. The screens already work; that behaviour is the question worth seven weeks.</p>
-      </div>
-    </div>
+  <div class="kicker q">The platform</div>
+  <h1 class="sm">One system, four&nbsp;audiences</h1>
+  <div class="cols c4" style="margin-top:70px">
+    <div class="card acc"><div class="n">LIVE</div><h3>Passport<br>&mdash; residents</h3>
+      <p>Request the car. Watch it come. Three states, one estimate, nothing else to learn.</p></div>
+    <div class="card acc"><div class="n">LIVE</div><h3>Valet<br>station</h3>
+      <p>The queue, the vehicles, the recent history. Names and decals &mdash; never a phone number.</p></div>
+    <div class="card"><div class="n">PHASE 2</div><h3>Manager<br>console</h3>
+      <p>Approvals, overrides, staff, reports. One place to run a garage.</p></div>
+    <div class="card"><div class="n">PHASE 2</div><h3>Custody<br>record</h3>
+      <p>Every action signed and time-stamped. The answer when a customer disputes a scratch.</p></div>
   </div>
-</div><div class="foot"><div class="who"><b>VisualMedia, Ltd.</b><span>&middot; Pioneer Parking, Inc &middot; 15 September 2026</span></div><div class="pg">10 / 20</div></div></div>
+  <div class="note" style="margin-top:auto;padding-top:44px"><b style="color:var(--navy)">The data model is
+  multi-tenant from day one.</b> That is deliberate: it is what would let Pioneer license this platform to other
+  operators rather than only run it.</div>
+</div><div class="foot"><div class="who"><b>VisualMedia, Ltd.</b><span>&middot; Pioneer Parking, Inc &middot; 15 September 2026</span></div><div class="pg">10 / 21</div></div></div>
