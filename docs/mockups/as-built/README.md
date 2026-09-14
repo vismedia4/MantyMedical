@@ -32,7 +32,13 @@ against these first.
   licence plate. Search is "First name, decal, make…".
 - **Parking location** is free text (`EV bay 1 — please plug in`), not a stall grid.
 - **Internal note** is a distinct field.
-- Location is **Wacker Drive Garage** / **Wacker Valet Station 1**.
+- Location reads **Wacker Drive Garage** / **Wacker Valet Station 1**.
+
+> ⚠ **Everything in these captures is synthetic.** Names, vehicles, decal numbers and
+> locations are seeded development records. Wacker is not a garage Pioneer has chosen for
+> the pilot, and Sofia Alvarez, Grace Kim, Linda Nguyen and Michael Torres are not
+> residents. Any client-facing use of these screens must carry a sample-data label — the
+> deck does, on slides 7 and 11.
 
 **Privacy — as actually built**
 - The valet **does** see the customer's name. The valet does **not** see a phone number.
