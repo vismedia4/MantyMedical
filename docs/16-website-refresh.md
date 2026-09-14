@@ -8,6 +8,11 @@
 > The website lives in `PioneerParking/pioneer-website` and is tracked separately from
 > the platform. This documentation set covers the **valet retrieval platform only**.
 >
+> **Pricing is settled and is not parked.** Fixed fee **$9,500** for the defined scope,
+> planning range **$7,500 – $12,500** if the scope or the assets change. That figure is the
+> client’s own and is on slide 20 of the Tuesday deck. Nothing else in this document is
+> to be quoted.
+>
 > The positioning material below — audience, de-emphasising specific locations, the site
 > as a credibility instrument — came from the 10 September session and is sound. The scope,
 > stack and structure sections are not to be relied on.
