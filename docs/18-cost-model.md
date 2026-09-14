@@ -38,9 +38,13 @@ Scope boundaries and week-by-week timelines are in
 ### Why both numbers belong in the proposal
 
 The bottom-up model in §3 below produces **505 person-days** for the full MVP. At a
-conventional blended rate of $300–400/day that is **$151,000–$202,000** — which
-independently corroborates the client-side estimate of what this build would have cost
-before AI tooling. Two methods, one answer.
+conventional blended rate of $300–400/day that is **$151,000–$202,000**, which corroborates
+the $150–200K pre-AI figure VisualMedia put forward. Two methods, one answer.
+
+> ⚠ **Attribution.** The $150–200K benchmark is **ours**, not Pioneer's. The client has
+> never stated a figure. Do not present it as a number Jonathan arrived at, in the deck or
+> anywhere else — he would correct it in the room and the rest of the pricing argument
+> would go with it. Present it as our own bottom-up estimate, with the derivation offered.
 
 That makes the delivered price a *quantified* discount rather than a cheap quote:
 
