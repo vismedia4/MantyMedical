@@ -86,7 +86,7 @@ white). The Customers tab is not captured — build it to the same table pattern
 |---|---|
 | Name | Navy bold. Station accounts read as posts: *"Wacker Drive Valet Station"* |
 | Role | Slate. `Valet Account` · `Garage Manager` · `Office Admin` |
-| Location(s) | Comma-joined, **wraps to multiple lines** — Paula Bennett lists all five |
+| Location(s) | Comma-joined, **wraps to multiple lines** — an office admin may list every location |
 | Status | `active` green pill |
 | Action | `Reset password` (slate) · `Suspend` (red) |
 

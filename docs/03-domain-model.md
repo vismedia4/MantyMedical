@@ -126,7 +126,7 @@ One principal table with a role, rather than four tables *(proposed)*.
 | `password_reset_required` | bool | *(proposed)* — supports the "Reset password" action |
 
 **`UserLocation`** join table: `user_id`, `location_id`. Required because the Users
-screen shows Hector Flores at two locations and Paula Bennett at all five.
+screen shows one attendant at two locations and another at every location.
 
 Status transitions observed: new customers land in `pending` and become `active` on
 manager approval. Staff have `Suspend` / reactivate. `Reset password` is an action on

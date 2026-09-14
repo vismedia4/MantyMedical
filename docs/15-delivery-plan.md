@@ -51,7 +51,7 @@ building on top of it.
 | Design tokens + core components, bound to `Tenant.theme` not hard-coded | L |
 | **Generic vehicle image mapping — start it now**, it has a long tail | M |
 | Enrol in both app-store developer programmes | S |
-| Seed data mirroring the five Pioneer locations | S |
+| Seed data mirroring the Pioneer locations in scope | S |
 
 **Exit criteria:** a signed-in user of each role lands on an empty shell of the right
 screen; tenant and location scoping are proven by a passing negative-test suite; the

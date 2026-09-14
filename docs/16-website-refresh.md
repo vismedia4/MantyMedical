@@ -51,7 +51,7 @@ The location de-emphasis is a deliberate strategic choice, stated directly:
 > locations — projecting a larger, more professional footprint."*
 
 Design the proof points as *"multiple properties across Illinois, Florida and New York"*
-rather than a map with five pins. A map with five pins makes Pioneer look like five
+rather than a map of pins. A map of pins makes Pioneer look like a handful of
 garages; the same facts stated as a portfolio make Pioneer look like an operator.
 
 **VisualMedia's counter-emphasis, on the record:**

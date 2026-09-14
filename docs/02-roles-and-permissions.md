@@ -153,7 +153,7 @@ The prototype distinguishes **personal accounts** from **shared station accounts
 - **Shared station** — Valet accounts. Named for the post, not the person:
   *"Wacker Drive Valet Station"* / `@wacker-valet`. The account is the tablet.
 
-Naming convention across all five locations is `@{location-slug}-valet` and
+Naming convention across all locations is `@{location-slug}-valet` and
 `@{location-slug}-manager`. Provisioning is manual and offline: *"Manager and valet
 credentials you set here are provisioned immediately and handed over directly;
 nothing is emailed."*

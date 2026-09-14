@@ -120,7 +120,7 @@ everything below is written for it.
 |---|---|
 | WebSocket | **Recommended.** Bidirectional, low latency, one connection per tablet. Needs reconnect logic |
 | SSE | Viable and simpler, but reconnect semantics on flaky garage Wi-Fi are no better |
-| Polling only | Fallback only. At 5s intervals across five locations it is affordable, but it makes the chime laggy |
+| Polling only | Fallback only. At 5s intervals across a multi-location portfolio it is affordable, but it makes the chime laggy |
 
 Ship polling first if it accelerates v1 — the request volume is tiny. But design the
 client around an event stream so the swap is a transport change, not a rewrite.

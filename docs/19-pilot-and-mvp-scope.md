@@ -30,7 +30,7 @@
 | Conventional-delivery benchmark | ~$60,000 | **$150,000 – $200,000** |
 | Effort, AI-augmented | ~72 person-days | ~155 person-days |
 | Duration | **7 weeks** | **18 weeks**, plus store review |
-| Locations | **One** — Wacker Drive Garage | All five |
+| Locations | **One** — garage to be confirmed | All locations in scope |
 | Roles live | Customer + Valet | All four |
 | App distribution | Internal build (TestFlight / internal track) | **Public, both stores** |
 | Ends with | A measured gate decision | A production system |
@@ -98,7 +98,7 @@ rings) · Ready push delivery rate · board uptime during operating hours.
 | **Request history and archive UI** | Seven weeks of data is not a history problem | Phase 3 |
 | **Notification preferences** | Ready-only, on by default, is the pilot configuration | Phase 3 |
 | **Manager and admin consoles** | One location administered by hand | Phases 2 & 4 |
-| **The other four locations** | One garage is the test | Phase 4 |
+| **The remaining locations** | One garage is the test | Phase 4 |
 | **Public app store release** | Internal distribution only — removes two review cycles from the critical path | Phase 5 |
 | **Kiosk hardening** | Basic lock only. Full device binding and PIN lock follow | Phase 5 |
 | **Accessibility audit, pen test, privacy review** | External and formal; premature before the loop is proven | Phase 5 |
@@ -136,9 +136,16 @@ excluded item is deferred, not cancelled.
 
 ---
 
+> ⚠ **Location count is not established.** Earlier drafts said "five locations". That
+> number was counted off the prototype's seed data, not given by the client — the same
+> source as the Wacker garage and the resident names. Pioneer runs considerably more than
+> five. Phase 4 is per-site work (administration, training, support, migration), so the
+> Full MVP estimate cannot be finalised until the number of sites in scope is confirmed.
+> Until then this document says "locations in scope" and nothing more.
+
 ## 3. Full MVP — 18 weeks
 
-**Objective:** all five locations, all four roles, live in both app stores, running
+**Objective:** all locations in scope, all four roles, live in both app stores, running
 unattended.
 
 ### Timeline
@@ -179,7 +186,7 @@ valet account management · chime settings · **availability switch**
 codes and inline account provisioning · staff and customer users · permanent activity
 archive · operational policies and approval SLAs · **escalated-approvals queue**
 
-**Platform** — all five locations · full push suite · permanent retention behind
+**Platform** — all locations in scope · full push suite · permanent retention behind
 windowed views · kiosk hardening · WCAG 2.2 AA · security and privacy review · both
 app stores · operator runbook
 
@@ -219,7 +226,7 @@ Quote these separately so neither figure reads as all-in.
 | External penetration test | ~$10,000–20,000 | Third party |
 | Legal counsel | Counsel's fee | Third party — retention policy, IP and licence agreement |
 | Apple + Google developer accounts | $99/yr + $25 once | Client |
-| Infrastructure, running | ~$400–900/month at five locations | Ongoing |
+| Infrastructure, running | Scales with the site count — estimate pending | Ongoing |
 | Hosting and maintenance | Retainer, terms TBD | VisualMedia |
 | Website refresh | Separate — [workstream 2](16-website-refresh.md) | |
 

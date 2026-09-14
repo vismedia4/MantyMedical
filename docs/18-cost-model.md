@@ -227,7 +227,7 @@ listed to be argued against.
 | Lever | Saves | Verdict |
 |---|---:|---|
 | **Stage the funding at the Phase 1 gate** | — | **Recommended.** Commit ~185 days to a piloted core loop, then decide on the remaining ~320 with evidence in hand. Costs nothing and de-risks everything |
-| Defer Phase 4 administration; VisualMedia operates locations manually at first | ~75 d | **Viable.** Five locations is a small enough portfolio to administer by hand for a few months. Delays self-service, not service |
+| Defer Phase 4 administration; VisualMedia operates locations manually at first | ~75 d | **Viable** if the portfolio is small enough to administer by hand for a few months; confirm the site count first. Delays self-service, not service |
 | Defer scheduling (Phase 3) to a fast-follow | ~62 d | Viable. Immediate retrieval is the core promise; scheduled pickups are an enhancement |
 | Web/PWA pilot instead of native | ~45 d | **Not recommended.** Push reliability is precisely what the pilot exists to test; testing it on a weaker channel produces a false result |
 | Drop multi-tenancy from the MVP | ~15–20 d | **Reject.** It saves the least and costs the most later. Per §2, it *is* the business case |
