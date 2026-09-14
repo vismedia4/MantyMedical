@@ -44,3 +44,15 @@ docs/deck/render.sh          # pages/*.html → slides/*.png
 
 `build.py` and `build2.py` generate the slide HTML; `split.py` writes one file per slide.
 Fonts are inlined, so rendering is offline and byte-stable. Edit a slide's HTML and re-run.
+
+## Standing rule — never name another provider
+
+Nothing in the client-facing material refers to the prior spec vendor, the prototype they
+built, or the fact that Pioneer already owns a specification. It is not our place to comment
+on another firm's work in Pioneer's own presentation, and pointing at a spec we did not write
+volunteers that part of the value did not come from us.
+
+Where the pricing argument needs a reason the gap is closeable, it cites **our own**
+foundation: the identity standard, the data model and a working retrieval loop.
+
+The same rule applies to the client page in `scratchpad/pioneer-build-review.html`.
