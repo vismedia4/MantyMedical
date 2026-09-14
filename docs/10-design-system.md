@@ -1,6 +1,6 @@
 # 10 — Design System
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -292,7 +292,7 @@ The prototype's `No photo` placeholder is retired. Design the assets as flat
 side-profile silhouettes in the system palette so a colour swap is a fill change, not
 150 × 12 rendered files.
 
-**Asset set is a real deliverable** — VisMedAI action item 04. Recommend body-style ×
+**Asset set is a real deliverable** — VisualMedia action item 04. Recommend body-style ×
 colour (~150 assets) over make × model (unbounded). Start it in parallel with build.
 
 ### Modal

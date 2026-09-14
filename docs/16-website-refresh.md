@@ -49,7 +49,7 @@ Design the proof points as *"multiple properties across Illinois, Florida and Ne
 rather than a map with five pins. A map with five pins makes Pioneer look like five
 garages; the same facts stated as a portfolio make Pioneer look like an operator.
 
-**VisMedAI's counter-emphasis, on the record:**
+**VisualMedia's counter-emphasis, on the record:**
 
 > *"Build the site so it scales as Pioneer adds properties, rather than as a snapshot of
 > today."*

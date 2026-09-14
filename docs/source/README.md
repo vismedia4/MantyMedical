@@ -1,6 +1,6 @@
 # 🔒 CONFIDENTIAL — DO NOT DISTRIBUTE
 
-`2026-09-10-pioneer-parking-build-brief.pdf` is **VisMedAI Advisory's internal file** from
+`2026-09-10-pioneer-parking-build-brief.pdf` is **VisualMedia, Ltd.'s internal file** from
 the 10 September requirements session.
 
 It contains, among other things:

@@ -1,6 +1,6 @@
 # 18 — MVP Cost & Effort Model *(proposed)*
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -18,7 +18,7 @@
 > scope in docs 01–15. Prepared for the **Tuesday 15 September** decision point.
 >
 > **This document estimates effort, not price.** Person-days are derived from the spec and
-> are defensible line by line. The day rate, margin and commercial structure are VisMedAI's
+> are defensible line by line. The day rate, margin and commercial structure are VisualMedia's
 > to set — the rate tables below are illustrative anchors, not a quote.
 
 ---
@@ -223,7 +223,7 @@ listed to be argued against.
 | Lever | Saves | Verdict |
 |---|---:|---|
 | **Stage the funding at the Phase 1 gate** | — | **Recommended.** Commit ~185 days to a piloted core loop, then decide on the remaining ~320 with evidence in hand. Costs nothing and de-risks everything |
-| Defer Phase 4 administration; VisMedAI operates locations manually at first | ~75 d | **Viable.** Five locations is a small enough portfolio to administer by hand for a few months. Delays self-service, not service |
+| Defer Phase 4 administration; VisualMedia operates locations manually at first | ~75 d | **Viable.** Five locations is a small enough portfolio to administer by hand for a few months. Delays self-service, not service |
 | Defer scheduling (Phase 3) to a fast-follow | ~62 d | Viable. Immediate retrieval is the core promise; scheduled pickups are an enhancement |
 | Web/PWA pilot instead of native | ~45 d | **Not recommended.** Push reliability is precisely what the pilot exists to test; testing it on a weaker channel produces a false result |
 | Drop multi-tenancy from the MVP | ~15–20 d | **Reject.** It saves the least and costs the most later. Per §2, it *is* the business case |

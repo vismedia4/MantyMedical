@@ -1,6 +1,6 @@
 # 08 — Screens: Garage Manager
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written

@@ -1,6 +1,6 @@
 # Pioneer Connect — Design & Development Documentation
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -35,7 +35,7 @@ to build the production system from these documents alone.
 
 | Priority | Source | Status |
 |---|---|---|
-| **1** | **Client requirements session, September 10, 2026** — Jonathan Cohen with VisMedAI Advisory. Archived: [`source/`](source/) | **Authority.** Where it disagrees with the prototype, it wins |
+| **1** | **Client requirements session, September 10, 2026** — Jonathan Cohen with VisualMedia, Ltd. Archived: [`source/`](source/) | **Authority.** Where it disagrees with the prototype, it wins |
 | 2 | 22 full-page prototype screenshots, all four roles. Checked in under [`screens/`](screens/) | Reference art. Superseded where the brief says otherwise |
 
 [00 — Client Requirements](00-client-requirements.md) records exactly what the brief
@@ -126,7 +126,7 @@ locations, staff accounts, six-digit enrollment codes, and system-wide policy.
 
 ## Next decision point
 
-**Tuesday, September 15, 12:00 noon** — VisMedAI presents MVP scope, timeline and cost for
+**Tuesday, September 15, 12:00 noon** — VisualMedia presents MVP scope, timeline and cost for
 the **platform**. [19 — Pilot & Full MVP Scope](19-pilot-and-mvp-scope.md) is the
 client-facing answer; [18 — Cost & Effort Model](18-cost-model.md) and
 [15 — Delivery Plan](15-delivery-plan.md) are the internal working behind it;

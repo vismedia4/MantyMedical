@@ -1,6 +1,6 @@
 # 01 — Product Overview
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -81,7 +81,7 @@ Each of these is a client-stated boundary, not a gap:
 ## The three theses that shape the architecture
 
 ### 1. Ownership
-Jonathan wants to own the platform outright — feature set, data, economics. VisMedAI
+Jonathan wants to own the platform outright — feature set, data, economics. VisualMedia
 provides hosting and maintenance on a scalable backend. No third-party SaaS in the
 critical path.
 

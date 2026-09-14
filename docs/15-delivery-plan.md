@@ -1,6 +1,6 @@
 # 15 — Delivery Plan *(proposed)*
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -15,7 +15,7 @@
 > page, which is written separately and carries none of the above.
 
 > Written to feed the **Tuesday, September 15, 12:00 noon** decision point, at which
-> VisMedAI presents MVP scope, timeline and cost. Requirements authority is
+> VisualMedia presents MVP scope, timeline and cost. Requirements authority is
 > [00 — Client Requirements](00-client-requirements.md).
 
 Sizes below are relative (S/M/L), and the phase structure here is the *engineering* plan.

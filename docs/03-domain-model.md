@@ -1,6 +1,6 @@
 # 03 — Domain Model
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -162,7 +162,7 @@ client-confirmed.
 
 > *"Generic vehicle images. No customer photo uploads. The system auto-generates or maps
 > a generic image from make, model and color. Rationale: reduces data load and avoids
-> privacy exposure. VisMedAI to define the brand / model / color to image mapping set."*
+> privacy exposure. VisualMedia to define the brand / model / color to image mapping set."*
 
 There is **no photo upload anywhere in this product.** The prototype's `Add photo`
 control and `No photo` placeholder are both removed.
@@ -179,7 +179,7 @@ standard colour set covers the entire vehicle population with ~150 assets and de
 gracefully to a neutral silhouette on an unknown input.
 
 Store the *inputs* and resolve at render time so the mapping can improve without a data
-migration. This is VisMedAI action item 04 and has a long tail — start it early.
+migration. This is VisualMedia action item 04 and has a long tail — start it early.
 
 ---
 

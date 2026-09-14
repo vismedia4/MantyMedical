@@ -1,6 +1,6 @@
 # 19 — Pilot & Full MVP: Scope and Timeline *(proposed)*
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -92,8 +92,7 @@ rings) · Ready push delivery rate · board uptime during operating hours.
 
 | Excluded | Why | Lands in |
 |---|---|---|
-| **Self-enrollment** (QR + access code) | Customers are seeded by hand for a single garage. Enrollment is 20 days of work that proves nothing about the loop | Phase 2 |
-| **Approvals workflow** | No self-enrollment means nothing to approve | Phase 2 |
+| **Approvals workflow** | Only needed if self-registration is switched on — see the option below | Phase 2 |
 | **Manager-absence backup** | Depends on approvals | Phase 2 |
 | **Scheduled and future pickups** | Immediate retrieval is the core promise; scheduling is an enhancement | Phase 3 |
 | **Request history and archive UI** | Seven weeks of data is not a history problem | Phase 3 |
@@ -104,6 +103,32 @@ rings) · Ready push delivery rate · board uptime during operating hours.
 | **Kiosk hardening** | Basic lock only. Full device binding and PIN lock follow | Phase 5 |
 | **Accessibility audit, pen test, privacy review** | External and formal; premature before the loop is proven | Phase 5 |
 | **Assisted (no-smartphone) customers** | Pending decision D1 | Phase 2 |
+
+### Pilot option — self-registration by QR code
+
+**This one is Pioneer's call, not ours.** It is the only item in the pilot that we
+recommend the client decide rather than us, because it changes what the pilot proves.
+
+| | **Without it** (base pilot) | **With it** |
+|---|---|---|
+| How customers get in | We seed them by hand for one garage | A resident scans a printed code and registers themselves |
+| What the pilot proves | The retrieval loop works | The retrieval loop works **and** residents can self-serve |
+| Also required | — | Access codes, the approval step, manager-absence backup |
+| Timeline | 7 weeks | **9 weeks** |
+| Price | **$26,000 – $28,000** | **$33,000 – $35,000** |
+
+**Our read:** the base pilot is the faster, cleaner test. Hand-seeding fifty residents in
+one garage takes an afternoon, and registration is not the thing anyone doubts — the
+retrieval loop is. Self-registration is real work that will have to be built either way,
+and it is already scoped into Phase 2 at no loss if deferred.
+
+**The case for including it now:** if Pioneer intends to show this to other operators
+during the pilot, a garage where residents enroll themselves demonstrates the product;
+a garage where we typed everyone in demonstrates a demo. That is a business judgement
+about who sees the pilot, which is why it belongs to the client.
+
+Either answer is fine. We need it before week 1 — after that it costs more than $7,000
+to add, because approvals reach into the data model.
 
 **What the exclusions buy:** the pilot answers one question — *does this work in a
 garage* — in seven weeks instead of eighteen, for 15% of the conventional cost. Every
@@ -195,7 +220,7 @@ Quote these separately so neither figure reads as all-in.
 | Legal counsel | Counsel's fee | Third party — retention policy, IP and licence agreement |
 | Apple + Google developer accounts | $99/yr + $25 once | Client |
 | Infrastructure, running | ~$400–900/month at five locations | Ongoing |
-| Hosting and maintenance | Retainer, terms TBD | VisMedAI |
+| Hosting and maintenance | Retainer, terms TBD | VisualMedia |
 | Website refresh | Separate — [workstream 2](16-website-refresh.md) | |
 
 ---

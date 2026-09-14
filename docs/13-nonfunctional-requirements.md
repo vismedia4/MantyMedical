@@ -1,6 +1,6 @@
 # 13 — Non-Functional Requirements
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -285,7 +285,7 @@ differently on iPadOS than on Android, and the choice is not reversible cheaply.
 
 ### App-store review is on the critical path
 
-> *"Two store submissions sit on the critical path to launch and are outside VisMedAI's
+> *"Two store submissions sit on the critical path to launch and are outside VisualMedia's
 > control. Build review cycles into the timeline presented Tuesday rather than absorbing
 > them as slippage."*
 

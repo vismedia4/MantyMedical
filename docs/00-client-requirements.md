@@ -1,6 +1,6 @@
 # 00 — Client Requirements & Decision Log
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -15,7 +15,7 @@
 > page, which is written separately and carries none of the above.
 
 **Source:** *Pioneer Parking Build Brief*, requirements session of **September 10, 2026**
-— Jonathan Cohen (Owner / Principal, Pioneer Parking) with VisMedAI Advisory
+— Jonathan Cohen (Owner / Principal, Pioneer Parking) with VisualMedia, Ltd.
 (Dima, Amal Amaskane). Zoom, screen-shared prototype walkthrough.
 Archived at [`source/2026-09-10-pioneer-parking-build-brief.pdf`](source/2026-09-10-pioneer-parking-build-brief.pdf).
 
@@ -35,7 +35,7 @@ Three theses drive every architectural decision that follows:
 
 | Thesis | Consequence for the build |
 |---|---|
-| **Ownership** — own the platform, the feature set, the data, the economics | No third-party SaaS in the critical path. VisMedAI hosts and maintains |
+| **Ownership** — own the platform, the feature set, the data, the economics | No third-party SaaS in the critical path. VisualMedia hosts and maintains |
 | **Licensing** — design it as a product other parking operators can license, not a Pioneer-only tool | **Multi-tenant from day one.** Product name and branding must not hard-bind to Pioneer Parking |
 | **Sequencing** — retrieval app is the fast, contained win; transient ticketing is the larger project behind it | MVP stays narrow. Do not absorb ticketing scope |
 
@@ -52,7 +52,7 @@ That is why valet-tablet reliability is called out as a named risk in §6.
 | **2** | **Website refresh** | Secondary, fast. See [16 — Website Refresh](16-website-refresh.md) |
 | **3** | **Transient ticketing digitization** | Explicitly deferred. See [17 — Roadmap Beyond MVP](17-roadmap-beyond-mvp.md) |
 
-**Decision point: Tuesday, September 15, 12:00 noon, Zoom.** VisMedAI presents MVP
+**Decision point: Tuesday, September 15, 12:00 noon, Zoom.** VisualMedia presents MVP
 scope, timeline and cost, plus website direction, structure, turnaround and cost.
 [15 — Delivery Plan](15-delivery-plan.md) is written to feed that meeting.
 
@@ -87,15 +87,15 @@ specified from the prototype.
 
 > *"Generic vehicle images. No customer photo uploads. The system auto-generates or maps
 > a generic image from make, model and color. Rationale: reduces data load and avoids
-> privacy exposure. VisMedAI to define the brand / model / color to image mapping set."*
+> privacy exposure. VisualMedia to define the brand / model / color to image mapping set."*
 
 The prototype's **Add photo** control and the `No photo` placeholder are both gone. The
 vehicle image is **derived**, not uploaded.
 
 **Affects:** doc 03 (Vehicle entity), doc 06 · C6/C7, doc 08 · M3, doc 10 (component),
 doc 11 (photo endpoints deleted), doc 13 (EXIF/photo-privacy section deleted).
-**New work:** VisMedAI owns defining the make/model/colour → image mapping set. This is
-a real deliverable with a long tail — it is action item 04 on the VisMedAI list.
+**New work:** VisualMedia owns defining the make/model/colour → image mapping set. This is
+a real deliverable with a long tail — it is action item 04 on the VisualMedia list.
 
 ### 4.2 Valets must not see customer phone numbers
 
@@ -153,7 +153,7 @@ approving rather than assigning it.
 > *"App store deployment required."*
 
 The prototype is a web app and I assumed an installable PWA. Two store submissions now
-sit on the critical path and are outside VisMedAI's control.
+sit on the critical path and are outside VisualMedia's control.
 
 ### 4.8 The feedback widget is an internal bug-reporting tool
 
@@ -297,7 +297,7 @@ address them:
    needs a written retention and access policy — in scope, not an afterthought.
    Particularly given phone numbers are deliberately withheld from valets.
 3. **App store review timelines.** Two submissions on the critical path, outside
-   VisMedAI's control. Build review cycles into the timeline; do not absorb them as slippage.
+   VisualMedia's control. Build review cycles into the timeline; do not absorb them as slippage.
 4. **Valet tablet reliability.** The persistent chime is the operational backbone. Device
    sleep, connectivity loss and background-notification handling on dedicated tablets
    determine whether the app actually beats ElimaWait — *which is the entire premise for

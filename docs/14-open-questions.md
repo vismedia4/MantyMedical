@@ -1,6 +1,6 @@
 # 14 — Open Questions
 
-> ## 🔒 INTERNAL — VisMedAI Advisory
+> ## 🔒 INTERNAL — VisualMedia, Ltd.
 >
 > This documentation set is **internal working material**. It contains effort estimates,
 > day-rate-revealing figures, commercial positioning, and analysis of the client written
@@ -121,7 +121,7 @@ channel.
 if customers complain, which they will not.
 
 ### Q10. Generic vehicle image mapping — what granularity?
-VisMedAI owns defining the brand/model/colour mapping set (client action item 04).
+VisualMedia owns defining the brand/model/colour mapping set (client action item 04).
 **Recommendation:** body-style × colour (~150 assets), not make × model (unbounded).
 Store the inputs and resolve at render time so the mapping improves without a migration.
 Degrade to a neutral silhouette, never a broken image. Start this early — it has a long tail.
